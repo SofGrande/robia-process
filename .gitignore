@@ -1,0 +1,20 @@
+# Secretos y credenciales (no commitear)
+Credenciales/
+.env
+.env.*
+*.pem
+
+# Cache local del catálogo Sheets y dumps de descubrimiento
+_cache_*.csv
+_topicos_raw_dump.json
+_topicos_resumen.txt
+_geo_descubrir.txt
+_smoke_test_*
+
+# Python
+__pycache__/
+*.pyc
+
+# Windows
+desktop.ini
+Thumbs.db

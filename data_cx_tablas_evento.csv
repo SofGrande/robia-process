@@ -1,0 +1,14 @@
+﻿orden;catalogo;esquema;tabla;nombre_legible
+1;data_products_prd;data_cx;s__general__zendesk_assignment__event;s / general / zendesk assignment / event
+2;data_products_prd;data_cx;s__general__zendesk_chats__event;s / general / zendesk chats / event
+3;data_products_prd;data_cx;s__general__zendesk_interactions__event;s / general / zendesk interactions / event
+4;data_products_prd;data_cx;s__general__zendesk_macros_usage__event;s / general / zendesk macros usage / event
+5;data_products_prd;data_cx;s__general__zendesk_satisfaction_score__event;s / general / zendesk satisfaction score / event
+6;data_products_prd;data_cx;s__general__zendesk_sla_target__event;s / general / zendesk sla target / event
+7;data_products_prd;data_cx;s__general__zendesk_ticket_nature__event;s / general / zendesk ticket nature / event
+8;data_products_prd;data_cx;s__general__zendesk_ticket_topics__event;s / general / zendesk ticket topics / event
+9;data_products_prd;data_cx;s__general__zendesk_tickets_events__event;s / general / zendesk tickets events / event
+10;data_products_prd;data_cx;s__human__csat__event;s / human / csat / event
+11;data_products_prd;data_cx;s__tech__ticket_custom_fields__event;s / tech / ticket custom fields / event
+12;data_products_prd;data_cx;s__tech__ticket_issue_problem__event;s / tech / ticket issue problem / event
+13;data_products_prd;data_cx;s__tech__ticket_subdomains__event;s / tech / ticket subdomains / event

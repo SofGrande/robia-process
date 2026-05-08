@@ -1,0 +1,829 @@
+Guideline IQS
+Internal Quality Score
+Support Operations - Mejora continua
+Diciembre de 2024
+
+→  www.tiendanube.com
+Versión
+ES
+
+Vamos conhecer o time de qualidade:
+@Pauli
+Paula Saboia
+Support Operations Sr. Manager 🇦🇷
+@Sofi Grande
+Sofia Grande
+Analista de Calidad y Experiencia del Cliente - AR | MX
+@Gabi Manarim
+Gabriela Manarim
+Team Leader Mejora continua
+01. Título da sessão
+@Robsz
+Roberta Alves
+Analista de Calidad y Experiencia del Cliente- BR
+
+Objetivo
+Propósito de la Guía
+Es importante informar que nuestros criterios están basados en el Branding de Booking y en las Políticas de Clientes.
+Definir los criterios de evaluación de la IQS de manera clara y objetiva, garantizando que todos estén alineados con los estándares de calidad esperados.
+Reforzar la importancia de la experiencia del cliente en cada etapa de la atención, desde el primer contacto hasta la resolución final.
+¿Qué vamos a evaluar? (Criterios)
+Tendremos los siguientes criterios:
+
+Error Crítico
+Confidencialidad
+Profesionalismo
+
+Crítico para el Cliente
+Reconocimiento del problema
+Conexión Extraordinaria
+Comunicación Eficaz
+Bots
+
+Crítico para el negocio
+Clasificación de la conversación
+Procesos Zendesk
+Issues y problemas
+Base de Conocimiento
+01. IQS Guideline
+¡Con gran entusiasmo anunciamos la reformulación de nuestra área IQS (Índice de Calidad de Servicio)!
+
+Con el objetivo de fortalecer la cultura de calidad y asegurar la mejor experiencia a nuestros clientes, estamos redefiniendo los criterios de evaluación.
+
+En esta nueva etapa, IQS deja de ser una métrica individual y pasa a reflejar el desempeño del equipo en su conjunto. Este cambio tiene como objetivo promover la colaboración, el sentido de responsabilidad compartida y el crecimiento conjunto.
+
+Error Crítico
+Confidencialidad | Profesionalismo
+01
+Guideline IQS
+
+Confidencialidad
+Se refiere al cumplimiento estricto de las directrices de confidencialidad establecidas para proteger información sensible. Un error crítico en esta área ocurre cuando:
+1. Compartir Información Inadecuada, es decir, cuando pasamos datos confidenciales de una tienda o cliente a un tercero que no tiene derecho a recibirlos. Esto incluye información que protege la privacidad individual, como detalles de pago y datos personales.
+2. Compartir Información Confidencial de la empresa (Nuvemshop/Tiendanube), como por ejemplo datos y/o imágenes del stats, capturas de conversaciones internas con otros departamentos.
+3. Modificaciones no solicitadas, es decir, alterar aspectos de la tienda de un cliente sin autorización expresa, como borrar productos, desconfigurar métodos de pago/envío, o deshabilitar funcionalidades clave (como cupones de descuento o dominios).
+4. Impacto grave en el negocio del cliente, es decir, proporcionar información incorrecta o realizar acciones que puedan afectar significativamente el funcionamiento del negocio del comerciante, como impedir ventas, interrumpir la operación de forma grave o causar un perjuicio importante al cliente.
+¿Qué es el criterio?
+→ Definición
+01. Error crítico
+Thumbs Down
+Thumbs Up
+Cuando pasamos datos confidenciales a un tercero sobre una tienda que no le pertenece.
+Cuando compartimos información confidencial de la empresa. Ejemplos: datos de stats, capturas de conversas internas con otras áreas.
+Cuando hacemos cambios en la tienda (sin autorización del merchant).
+Cuando brindamos información errónea o realizar acciones que puede afectar de forma grave al merchant o al negocio y por consecuencia, no puede vender o se interrumpe la operación. 
+Compartir la información adecuada de la tienda.
+Verificar los datos de la tienda antes de proveer información en la respuesta.
+Realizar pruebas con la información proporcionada por el cliente antes de solicitar más detalles sobre el problema.
+Pedir autorización al merchant para poder avanzar con un cambio.
+
+Profesionalismo
+Se refiere al mantenimiento de un tono adecuado y respetuoso durante toda la interacción con el cliente.
+Un error crítico en esta área ocurre cuando:
+El agente adopta un tono inapropiado, irrespetuoso o no profesional en sus comunicaciones, ya sea por expresar irritación, desdén, sarcasmo o cualquier otro comportamiento que no esté alineado con los estándares esperados. El enfoque siempre debe ser ofrecer un servicio de alta calidad, con empatía y educación, independientemente de la situación. Las palabras vulgares son totalmente inadmisibles.
+¿Qué es el criterio?
+→ Definición
+01. Error crítico
+→ Puntos importantes
+Thumbs Down
+Thumbs Up
+Al tener Critical Error marcado como Thumbs Down, el puntaje de la review es automáticamente 0%.
+Ignoro el historial de una conversación anterior mencionada explícitamente por el cliente antes de responder.
+ El cliente nos comparte su duda y simplemente ignoramos la información e incluimos interacciones innecesarias, ampliando el tiempo de resolución de una conversación que podría haberse resuelto antes.
+Nos dicen explícitamente que son consumers y les respondemos como si fueran merchants.
+Cuando escribimos con falta de respeto al merchant y usamos malas palabras.
+No responder el ticket y cerrarlo.
+Evalúo si estoy brindando al cliente una experiencia alineada con nuestra cultura y objetivos.
+Consulto documentos actualizados sobre nuestra cultura y objetivos para mantener un servicio consistente y de alta calidad.
+Me aseguro de que mi respuesta se envíe correctamente a mi destinatario
+
+Crítico para el cliente
+Reconocimiento del problema | Conexión extraordinaria | Comunicación eficaz | Bots
+02
+Guideline IQS
+
+Subcategorías
+Crítico para el cliente
+Análisis y Sondeo
+Reconocimiento del problema
+Conexión extraordinaria
+02. Crítico ao cliente
+La categoría "Crítico para el Cliente" está compuesta por cuatro criterios principales:
+
+Reconocimiento del Problema
+Conexión Extraordinaria
+Comunicación Eficaz
+Bots
+
+Cada uno de ellos tiene subcategorías que nos permiten analizar en detalle diferentes aspectos de la atención, buscando siempre la excelencia en la experiencia del cliente.
+Comunicación eficaz
+BOTs
+Apertura
+Tono
+Personalización
+Empatía
+
+Claridad en el lenguaje
+Estructura Piramidal
+Continuidad
+Respuesta Completa y Correcta
+Autonomía
+Evaluamos si las interacciones con los bots cumplen con todas las directrices establecidas en la guía.
+
+Reconocimiento del Problema
+Se refiere a la capacidad del agente para comprender, analizar y reconocer adecuadamente el problema reportado por el cliente.
+⚠️Atención: Para que un ticket de esta categoría reciba puntuación, es imprescindible que exista una nota interna validando los pasos del análisis. La ausencia de esta nota, que imposibilita la auditoría del análisis, supondrá una puntuación cero en todos los criterios de evaluación de la categoría.
+
+Análisis y sondeo
+El agente debe analizar el historial de la conversación, la interacción anterior de Claudia y los datos de la tienda (incluyendo información en herramientas como "stats" o "admin") para entender la situación, y, si es necesario, hacer preguntas claras y objetivas para investigar la causa del problema y recopilar toda la información relevante, sin sacar conclusiones precipitadas.
+¿Qué es el criterio?
+→ Definición
+02. Crítico ao cliente - Reconhecimento do Problema
+→ Puntos importantes
+Thumbs Down
+Thumbs Up
+Cuando le preguntamos al merchant más información sobre su consulta para evitar sacar conclusiones precipitadas.
+Cuando hacemos pruebas en nuestra tienda de prueba para intentar reproducir el error.
+Cuando leemos los tickets creados para saber si antes ya se contactó por el tema que nos acerca y accionamos sobre el ticket con esa información.
+Cuando utilizamos detalles específicos del historial de los tickets.
+Cuando demostramos comprensión clara del problema.
+⭐ Buena práctica: Dejar en “notas internas” capturas de cuáles fueron los análisis realizados.
+
+Punto clave: Analizar por completo del historial de tickets y comprender las respuestas previas. 
+Cuando no le preguntamos al merchant más información sobre su consulta y sacamos conclusiones precipitadas.
+Cuando el merchant nos presenta un inconveniente y no hacemos las pruebas necesarias en nuestra tienda de prueba para intentar reproducir el error.
+Cuando no leemos el historial de mensajes dentro de la conversa y respondemos sin contexto.
+👀 Cuando no leemos el historial del ticket, puede suceder que el merchant sienta que su situación no es comprendida o que está comenzando desde cero.
+Cuando no leemos los tickets creados/duplicados para saber si antes ya se contactó por el tema que nos acerca.
+Cuando no demostramos comprensión clara del problema.
+
+Conexión Extraordinaria
+Refere-se à capacidade do agente de estabelecer uma conexão emocional e genuína com o cliente, criando uma experiência positiva e memorável.
+⚠️Atención: Para que un ticket de esta categoría reciba puntuación es imprescindible que el mensaje haya sido entregado al cliente. La ausencia de confirmación de entrega dará lugar a una puntuación cero en todos los criterios de evaluación de la categoría.
+
+Apertura
+Iniciar la interacción con una actitud acogedora y disposición para ayudar. El cliente debe sentir que su problema está siendo tratado con atención desde el inicio. Usar una apertura adecuada según el historial del ticket.
+¿Qué es el criterio?
+→ Definición
+Thumbs Down
+Thumbs Up
+02. Crítico ao cliente - Conexão Extraordinária
+Una buena apertura consiste en: 
+1. Saludo adecuado al contexto (formal o informal) y hora del día (“Buenos días”, “Buenas tardes”, “Buenas noches”).
+2. Presentación del gurú
+3. Abrir la conversación (Utilice frases que demuestren bienvenida y voluntad de ayudar).
+No comienzo la interacción de manera acogedora o con la voluntad de ayudar.
+
+No hago que el cliente sienta que su problema se está manejando con cuidado desde el principio.
+
+No pregunto cómo prefiere que lo llamen el cliente si el nombre no ha sido registrado.
+
+No utilizo una apertura adecuada, teniendo en cuenta el historial de tickets y las interacciones previas.
+
+Inicio la interacción de forma acogedora, con actitud positiva y voluntad de ayudar.
+
+Me aseguro de que el cliente se dé cuenta de que su problema se está manejando con cuidado desde el principio.
+
+Si el nombre del cliente no está registrado, pregunto cómo debo llamarlo.
+
+Utilizo una apertura adecuada, teniendo en cuenta el historial de tickets y las interacciones previas.
+Macros de apoyo: [AR] Saludos:: Inicial | [MX] Saludos:: Inicial y Final
+
+Apertura
+No pregunto cómo prefiere que lo llamen el cliente si el nombre no ha sido registrado.
+Hola, ¿cómo estás? ¡Espero que muy bien!
+Te saluda Sofía del equipo de Tiendanube, ¿te gustaría indicarme tu nombre, así puedo dejarlo registrado?
+¡Hola! 😊 ¿Cómo te estás?
+Te saluda Sofía de Tiendanube. Me encantaría saber tu nombre para poder dirigirme darte una atención más personalizada. ¿Te gustaría compartirlo conmigo así lo dejo agendado?
+✅
+Hola, ¿cómo estás? ¡Espero que muy bien!
+Te saluda Sofía del equipo de Tiendanube, con gusto voy a ayudarte en esta oportunidad.
+Hola X,Lamento los problemas que fueron siguiendo, estuve analizando el historial de mensajes y estoy al tanto de cada detalle de la situación. Soy Sofía y estoy  para ayudarte a resolverlo.
+✅
+No comienzo la interacción de manera acogedora o con la voluntad de ayudar. No hago que el cliente sienta que su problema se está manejando con cuidado desde el principio.
+❌
+
+Tono
+Debe ser motivador (inspiramos y motivamos la acción), realista (somos conscientes del contexto y hablamos de las posibilidades reales), cercano (usamos un tono empático que genera confianza) y somos especialistas sobre el producto que estamos ofreciendo (sabemos de lo que hablamos, somos reconocidos por nuestra trayectoria y liderazgo en la región).
+¿Qué es el criterio?
+→ Definición
+→ Puntos importantes
+Thumbs Down
+Thumbs Up
+02. Crítico ao cliente - Conexão Extraordinária
+Tono trata sobre cómo nos comunicamos. Refleja el estilo y el enfoque del mensaje, garantizando que sea motivador, realista, comunicativo y profesional.
+🌟 La atención se centra en la aplicación coherente del tono de voz de Tiendanube, alineado con nuestros valores y la experiencia del cliente.
+Desmotivador
+"Eso no es posible, no podemos ayudarte con eso desde acá".
+Pesimista o inalcanzable:
+"Es poco probable que puedas resolver esto sin la ayuda de un desarrollador".
+Frio o distante
+"Estamos revisando su solicitud. Espere".
+Falta de seguridad o autoridad:
+"Creo que este problema podría ser X, pero no estoy seguro".
+Imperativo o incisivo
+"Deberías revisar esto porque está mal".
+Genérico:
+"Su problema ha sido registrado. Nos comunicaremos en breve".
+"¡Con esta solución podrás organizar tu tienda de una forma aún más práctica!"
+"Podemos ajustar este punto dentro de la configuración actual, pero para cambios avanzados será necesario un desarrollador".
+"Entiendo tu pregunta y quiero ayudarte a resolverla de la manera más sencilla posible. Estoy analizando los escenarios para aislarlos y ser clara en la respuesta".
+"Analizando interacciones anteriores te recomiendo ajustar [X] para evitar problemas futuros".
+"Esta solución está diseñada para facilitarle el trabajo y garantizar lo mejor para su tienda."
+"¡Hola, Juan! Ya identifiqué este comportamiento y me estoy ocupando ahora mismo. Vuelvo pronto con la solución para ayudarte. 😉"
+Un tono negativo resalta un estilo de comunicación demasiado formal o distante, que puede interpretarse como insensible o desinteresado. Este tono puede ser impersonal, sin tener en cuenta el estado emocional del cliente o dejar la conversación sin motivación. A su vez, demostramos inseguridad al hablar del producto, demostramos estar en duda.
+El tono positivo destaca una actitud acogedora y comunicativa, reconociendo genuinamente las necesidades del cliente y ofreciendo soluciones de forma clara y motivadora. Demostramos seguridad potenciando al merchant.
+
+Tono de Voz - Tiendanube | Nuvemshop
+Não devemos
+Qué hacer
+Qué podemos hacer,
+con sentido común
+Poner al cliente en el centro de la conversación.
+
+Utilizar un lenguaje motivador y positivo.
+
+Ser empático y demostrar comprensión.
+
+Presentar soluciones realistas y claras.
+
+Utilizar ejemplos para facilitar la comprensión.
+
+Abordar temas relevantes como emprendimiento, tecnología y retail.
+
+Ser cordial y mantenga un tono amistoso.
+Utilizar jerga, exclamaciones y emojis, pero con moderación; Evitar exagerar el tono de la conversación.
+Hacer referencia a temas de actualidad, pero solo si son relevantes para el contexto.
+Utilizar memes, GIF o modismos, siempre y cuando respeten el tono profesional y del público.
+Ser emocional o apasionado, pero sin perder la objetividad y la orientación al cliente.
+Utilizar contracciones lingüísticas.
+Adoptar un tono demasiado bromista o irrelevante.
+Tratar al cliente como a un amigo cercano o un familiar.
+Dar órdenes, regañar o responder de forma incisiva.
+Jugar con los problemas de los clientes o minimizar sus preocupaciones.
+Incitar rivalidades entre marcas o comparar soluciones de forma negativa.
+Prometer soluciones mágicas o inalcanzables.
+
+Personalización
+Proporcionar un servicio personalizado para las necesidades del cliente. El agente debe dirigirse al cliente por su nombre, mencionar detalles específicos sobre el caso y adaptar sus respuestas/macros para demostrar que está realmente involucrado. Además, es importante tener en cuenta el canal de la interacción para adaptar el formato del mensaje enviado.
+¿Qué es el criterio?
+→ Definición
+→ Puntos importantes
+02. Crítico ao cliente - Conexão Extraordinária
+En los canales WA/MSG debemos seguir algunas recomendaciones para mejorar la experiencia del cliente.
+
+Una personalización negativa ocurre cuando la comunicación es impersonal, sin tener en cuenta el nombre del cliente, sus preferencias o el contexto específico del caso. Esto puede dar lugar a respuestas genéricas, poca atención a las necesidades individuales del cliente y desconsideración por el canal de comunicación utilizado.
+La personalización positiva refleja una interacción en la que el nombre del cliente se utiliza constantemente para generar una conexión, se considera el contexto de su caso y las respuestas se adaptan al canal y su situación específica. Esto demuestra atención y aprecio hacia el cliente, haciéndolo sentir único y bien atendido.
+No uso el nombre:
+"¡Hola! Siguí este paso a paso: [enlace al tutorial]".
+Ignoro el canal del ticket (WA o MSG):
+"Para obtener más detalles, consulte nuestro tutorial completo: [enlace al artículo CAN]".
+(Enviado por WhatsApp, donde son más adecuados los mensajes cortos).
+Respuesta gral sin centrarse en el problema
+"Para solucionar problemas de pago, consultá el tutorial en nuestro Centro de ayuda".
+Ignoro la información proporcionada antes:
+Cliente: "Mi nombre es Amanda, tengo problemas con el pago a través de Pagar.me".
+Respuesta: "Acá hay un artículo sobre cómo configurar el pago".
+Centrarse en soluciones genéricas:
+"Para corregir los errores al finalizar la compra, verificá la configuración de la tienda e intentá en una pestaña de incógnito".
+"¡Hola, Juan! ¿Cómo estás? Vi que necesitas configurar el CUIT dentro  de tu tienda. Te dejo el link del tutorial con el paso a paso correcto: [enlace]".
+"Juan esa es la forma más rápida de corregir el error en la pasarela  de pagos. Si necesitas más detalles, ¡avísame y te envío el tutorial completo! 😉"
+“Juan, para solucionar el error que mencionaste al finalizar la compra, te voy a enviar un tutorial para configurar Paypal correctamente. Si necesitas más detalles, ¡estoy a tu disposición!"
+"¡Hola Amanda! Vi que tenés un problema con Pago Nube. Te envío los pasos específicos para resolverlo."
+“Juan, este error al finalizar la compra está relacionado con x e y. Para resolverlo, marca z y escribime nuevamente, por favor”.
+Thumbs Down
+Thumbs Up
+
+Empatía
+Demostrar que el agente comprende y se preocupa por el impacto que el problema está teniendo en el cliente. Esto implica ponerse en el lugar del cliente y reconocer sus frustraciones o preocupaciones de manera genuina.
+¿Qué es el criterio?
+→ Definición
+→ Puntos importantes
+Thumbs Down
+Thumbs Up
+02. Crítico ao cliente - Conexão Extraordinária
+La empatía consiste en conectar con los sentimientos del cliente, reconocer sus preocupaciones y frustraciones y demostrar que realmente nos preocupamos por su experiencia.
+🌟La atención se centra en la conexión emocional y la validación de los sentimientos demostrados.
+Indiferente
+"Tu problema será analizado. Aguarda"
+Desinteresado
+"El problema parece ser técnico, así que se lo derivaré con el equipo".
+Ignorar emociones
+"Este es un error común. Danos un instante que vamos a solucionarlo".
+Falta de sentido de urgencia
+"Es posible que se necesiten algunos días para revisar este problema".
+Prisa para cerrar el caso
+"Esta es la solución que tenemos, espero que resuelva el inconveniente".
+"Entiendo el impacto que esto puede tener esto para ustedes y estoy acá  para trabajar juntos en esto".
+"Si estuviera en tu lugar, también estaría preocupado. Ya estoy hablando con el equipo técnico para revisar esto como una prioridad".
+"Imagino que este comportamiento está impactando tu día a día, así que te voy a explicar en detalle por qué sucede esto y qué podés  hacer".
+"Voy a solicitar prioridad de inmediatamente este problema así podemos rápidamente".
+"Quiero que sepas que estoy siguiendo este caso de cerca hasta que se resuelva".
+En el criterio de Empatía consideramos negativa la falta de comprensión del impacto del problema del cliente, lo que da lugar a respuestas frías o desinteresadas, sin reconocimiento de las frustraciones del cliente. Esto puede generar un sentimiento de desprecio o indiferencia.
+Lo positivo, a su vez, se refleja cuando demostramos una preocupación genuina por la situación del cliente, reconociendo y validando sus emociones. Esto transmite una sensación de urgencia y apoyo, creando una conexión real y positiva y reforzando que el cliente está siendo escuchado y comprendido.
+
+Comunicación Eficaz
+Se refiere a la capacidad de transmitir información de manera clara, completa y objetiva, asegurando que el cliente comprenda el mensaje sin ambigüedades ni confusiones.
+⚠️Atención: Para que un ticket de esta categoría reciba puntuación es imprescindible que el mensaje haya sido entregado al cliente. La ausencia de confirmación de entrega dará lugar a una puntuación cero en todos los criterios de evaluación de la categoría.
+
+Claridad
+Los mensajes deben ser directos y gramaticalmente correctos, evitando complejidad innecesaria. El lenguaje debe ser accesible para cualquier nivel de conocimiento del cliente.
+¿Qué es el criterio?
+→ Definición
+→ Puntos importantes
+Thumbs Down
+Thumbs Up
+02. Crítico ao cliente - Comunicação Eficaz
+Cuando no somos claros en la explicación o en la solución que estamos planteando y damos lugar a dudas.
+Falta de claridad y fluidez. 
+Frases incompletas, palabras mal escritas, abreviaciones, escribir nombres propios en minúscula.
+Errores gramaticales y ortográficos
+Utilizar de forma incorrecta los signos de puntuación. 
+Errores ortográficos graves. Ejemplo: "abrá" lo correcto es "habrá".
+Abreviaturas incorrectas. Las más frecuentes son usar ‘q’ en lugar de ‘que’, ‘tmb’ para sustituir a ‘también’
+Mal uso del por qué, porque y porqué, que puede agravarse más al abreviar la palabra a un ‘xq’.
+Cuando utilizamos de forma correcta los signos de puntuación.
+Cuando conjugamos bien los verbos.
+Cuando redactamos de forma clara y completa.
+Cuando somos claros en nuestra explicación y demostramos estar seguros de lo que mencionamos.
+Falta de conjunciones
+¿Ya puedes verlo? o ¿sigues sin poder visualizarlo?"
+¿Ya puedes verlo o aún sigues sin poder visualizarlo?
+Frases poco claras
+por lo que para evitar que salgan dos, hay que eliminar uno
+para evitar que se muestren ambos números, debes eliminar uno
+Comma innecesaria
+Lo que te recomiendo es que, para que futuras facturas, salgan correctamente, puedas corroborar que todos los datos cargados(...)
+Lo que te recomiendo para que las facturas se generen correctamente, es que puedas corroborar que todos los datos cargados(...)
+Tiempo verbal incorrecto
+Ya quedo completada
+Ya quedó completada (verbo "quedar" en pretérito perfecto) 
+Tildes olvidadas
+¿Como estas?
+¿Cómo estás?”
+Falta de claridad y fluidez
+Voy a estar realizando seguimiento de tu caso, para efectivizar que se complete antes de ese plazo
+Voy a hacer un seguimiento para asegurarme de que se complete antes de ese plazo". Esto hace la oración más fluida y menos compleja.
+Se considerará una falla de claridad la suma de 3 o más oportunidades de mejora por interacción.
+
+Estructura Piramidal
+Nuestra primera interacción en la respuesta debe ser directa a la pregunta del cliente, sin rodeos. Este estilo de comunicación reduce la ansiedad de quien lee. La información debe estar organizada de manera fácil de seguir, ayudando al cliente a entender rápidamente lo que se está diciendo o solicitando.
+
+Documentación de apoyo: Training Comunicación piramidal y Claridad
+¿Qué es el criterio?
+→ Definición
+→ Puntos importantes
+Thumbs Down
+Thumbs Up
+02. Crítico ao cliente - Comunicação Eficaz
+El objetivo es garantizar que el merchant reciba el mensaje principal primero, y que seguido a eso reciba informaciones adicionales que complementen (tutoriales, videos, imágenes).
+🚩 Cuando seguimos bien la estructura de comunicación:
+
+✅ Respondo la duda al comienzo de la respuesta.
+
+✅ Después, doy contexto o sumo info adicional, como tutoriales, videos o imágenes.
+
+✅ Cierro con una despedida acorde al contexto.
+
+✅ Confirmo si quedó alguna duda. Al utilizar de forma correcta la estructura de comunicación Piramidal:
+
+🚩  Cuando no usamos bien la estructura de comunicación:
+
+Empiezo la respuesta dando contexto y recién después contesto la consulta.
+
+No cierro la interacción con un saludo claro o cálido.
+
+Termino sin chequear si la persona se quedó con alguna duda.
+
+Finalizo con una pregunta de troubleshooting o con información vaga, sin una conclusión clara.
+
+🎯 ¿Por qué usar esta forma de escritura?
+Aumenta la comprensión del mensaje en el primer scroll.
+Mejora la satisfacción del merchant.
+Nos posiciona como especialistas: claros, seguros, resolutivos.
+📌 ¿Qué es la estructura piramidal?
+Es un estilo de comunicación que pone primero lo principal, y deja los detalles y explicaciones para después.
+👆 Primero lo que responde a la duda. 👇 Después, todo lo que ayuda a entender mejor (links, imágenes, videos, contexto, pasos).
+Respuesta: Dar respuesta al inicio de la conversación, este tipo de estrategia disminuye la ansiedad del merchant y la percepción de que estamos prolongando el asunto. Obtenemos su atención y le ofrecemos lo que necesita. 
+Argumento de apoyo: Dar contexto, ¿sabemos qué generó el error en su tienda? ¿Qué aplicación puede utilizar para la funcionalidad que precisa? Explicar el QUÉ y el CÓMO;
+
+Conclusión/seguimiento: Linkear toda la información que pasamos previamente. Ofrecer tutoriales que puedan ayudar y pasar seguridad al merchant sobre cómo vamos a tratar su caso. 
+Finalizar con un seguimiento de su caso o apoyo constante desde nuestro lado. 
+
+✅
+❌
+ CUANDO APLICAMOS BIEN ESTRUCTURA PIRAMIDAL
+ CUANDO TENEMOS OPORTUNIDAD DE MEJORA EN ESTRUCTURA PIRAMIDAL
+
+Continuidad
+Garantiza que la experiencia del cliente sea fluida y consistente, desde el inicio de la interacción con la IA hasta la atención humana (esto incluye el cambio de agente o equipo durante la atención), asegurando calidad y coherencia en las respuestas.
+
+Más detalles y ejemplos en la presentación.
+¿Qué es el criterio?
+→ Definición
+→ Macros importantes
+Thumbs Down
+Thumbs Up
+02. Crítico ao cliente - Comunicação Eficaz
+Ignoro lo que ya han hecho ClaudIA o Eddie, empezando desde cero como si no hubiera contexto.
+Repito la misma información que ya ha proporcionado el Bot, sin aportar valor ni avanzar en la solución del problema.
+No logro corregir una respuesta incorrecta o insuficiente del Bot, reforzando la insatisfacción o duda del cliente.
+No logro crear una conexión entre la inteligencia artificial y human, lo que hace que el cliente sienta que necesita "empezar de nuevo".
+Ignoro la historia y no mantengo fluida la conversación cuando hay un cambio de gurú o de equipo, o cuando se crea un caso como continuación de otro.
+Parto directamente del saludo para abordar el contexto técnico, sin validar si entendí correctamente el problema o si estamos alineados en las expectativas, cuando esto es fundamental para garantizar una buena experiencia.
+Valido lo que ClaudIA o Eddie ya han hecho cuando es necesario, mencionando el historial de interacciones y resaltando que somos conscientes del contexto.
+Refuerzo o corrijo la información dada por la IA, demostrando que somos un solo equipo y asegurando que la experiencia sea fluida.
+Cuando acepto un ticket de otro gurú o equipo, contextualizo al cliente sobre lo que ya se hizo, resaltando que seguí la interacción.
+Cuando noto que ClaudIA no resolvió el problema, compenso el fracaso con un enfoque más asertivo y personalizado, corrigiendo la percepción del cliente.
+Entre el saludo y el contexto técnico, reviso el problema presentado antes de continuar, para validar que entendí correctamente y alinear expectativas cuando sea necesario.
+[AR] BOT:: Respuesta insatisfactoria del bot [Nov 2024][AR] BOT:: Respuesta errónea del Bot [Nov 2024][AR] BOT:: Respuesta correcta de ClaudIA seguimiento de pasos [Nov 2024][AR] BOT:: Feedback nuevo bot [Nov 2024][AR] BOT:: Agradecimiento Bot [Nov 2024]
+[AR] BOT:: El merchant no quiere hablar con el Bot [Dic 2024]
+
+Cuando post apertura directamente abordamos el contexto técnico, sin validar si entendimos correctamente el problema o si estamos alineados en las expectativas, cuando esto es fundamental para garantizar una buena experiencia.
+Valido lo que ClaudIA o Eddie ya han hecho cuando es necesario, mencionando el historial de interacciones y resaltando que somos conscientes del contexto.
+"Buenas tardes,¿cómo estás? 
+Te saluda X 👋️. Entiendo que estás configurando una promoción 3x2 en tu tienda, ¡estoy acá para ayudarte con eso!"
+✅
+¡Hola Ale, buenos días! Espero que estés muy bien En esta oportunidad te saluda XXX del equipo de Pago Nube Entendemos que tenías una consulta sobre la validación de identidad en tu cuenta. Leí que nuestro bot te menciono que te cuenta había sido hackeada o vulnerada, eso no es correcto, te pido disculpas. Nuestro bot de Inteligencia Artificial está en constante aprendizaje, y por eso compartimos este caso con nuestro equipo para seguir mejorando tu experiencia en Tiendanube.
+
+Estamos para ayudarte con lo que necesites.
+Ahora, con respecto a tu consulta (...)
+Continuidad
+❌
+✅
+❌
+
+Autonomia
+Se refiere a la capacidad de ir más allá de la resolución inmediata, proporcionando materiales y orientación que permitan al cliente aprender, explorar y resolver situaciones futuras de forma independiente.
+
+¿Qué es el criterio?
+→ Definición
+
+✅ Siempre que sea posible, ofrezca materiales complementarios (p. ej., artículos de guía, tutoriales, vídeos).
+✅ Anime al cliente a explorar y aprender más sobre la plataforma.
+✅ Evalúe cuándo es posible y necesario fomentar esta autonomía, sin sobrecargarlo con información irrelevante.
+→ Puntos importantes
+02. Crítico ao cliente - Comunicação Eficaz
+Thumbs Down
+Thumbs Up
+
+
+No ofrecimos materiales adicionales ni siquiera cuando existía una clara oportunidad.
+
+Mantuvimos al cliente dependiendo del soporte técnico para problemas que podrían haber sido autogestionados.
+
+No recomendamos contenido que podría haberle ayudado a comprender mejor la solución o el contexto.
+
+
+
+
+Ofrecemos a nuestros clientes herramientas para fomentar su autonomía.
+
+Proporcionamos materiales adicionales o asesoramiento relevante para cada situación.
+
+Ayudamos a nuestros clientes a prepararse para resolver problemas similares en el futuro.
+
+
+Respuesta Correcta
+Se refiere a nuestra capacidad de entender correctamente la necesidad del cliente y dar una respuesta acertada, enfocada en el tema planteado. Esto significa evitar confusiones, no mezclar temas, no dejar dudas sin resolver y asegurarnos de que el cliente reciba la orientación adecuada para poder avanzar con seguridad.
+¿Qué es el criterio?
+→ Definición
+→ Puntos importantes
+Thumbs Down
+Thumbs Up
+02. Crítico ao cliente - Comunicação Eficaz
+Respondo correctamente al tema planteado por el merchant.
+
+Explico el contexto o justifico nuestra respuesta, cuando es necesario.
+
+Brindo información correcta, que realmente aplica a la situación del merchant, y mantengo el foco en el tema adecuado, sin mezclar ni confundir los asuntos.
+🌟 Es fundamental aclarar el motivo del contacto del merchant para poder avanzar con seguridad.
+✅ Dar una respuesta certera, correcta y directa.
+✅ Responder puntualmente sobre el tema que planteó el merchant.
+✅ Responder sobre la tienda correcta.
+✅ Aclarar el motivo del contacto del merchant para poder avanzar con seguridad.
+Respondo sobre un tema X cuando el merchant estaba hablando de un tema Y.
+
+Respondo basándome en información de otra tienda.
+
+Los links o imágenes compartidos en el ticket están rotos o redirigen de forma incorrecta.
+
+Doy una respuesta equivocada, generando confusión o perjudicando al cliente en lo que necesitaba hacer o entender.
+
+BOTs
+Experiencia con los bots.
+
+
+
+BOTs
+El bot debe responder correctamente a la pregunta del comerciante, con o sin el contexto proporcionado. Además de la precisión de la respuesta, es crucial que el bot sea eficiente y objetivo, evitando interacciones confusas o excesivamente largas. 
+¿Qué es el criterio?
+→ Definición
+→ Puntos importantes
+Thumbs Down
+Thumbs Up
+02. Crítico ao cliente - BOTs
+Cuando el cliente pide hablar con un humano en la primera interacción y ClaudIA se vende de forma correcta (ósea, que le pregunta si desea probar en consultarle a ella antes que a soporte).
+ClaudIA responde a la consulta del merchant de forma correcta
+ClaudIA responde correctamente a la consulta del merchant y escala si es necesario.
+Eddie activa un flujo adecuado para la situación y completa todos los pasos antes de derivar a un humano.
+ClaudIA responde con empatía y un tono alineado con Tiendanube.
+ClaudIA tiene una apertura correcta y le da la bienvenida al merchant.
+ClaudIA inventa una respuesta/Alucina.
+ClaudIA/Eddie responde de forma incorrecta/incompleta. 
+Claudia/Eddie se queda en looping o haciendo preguntas demasiadas sin necesidad.
+Claudia no pide más de 3 veces detalles.
+Eddie activa un flujo incorrecto o se salta pasos esenciales del flujo para resolver el caso con agilidad.
+Eddie/ClaudIA podría haber retenido, pero escaló.
+ClaudIA continúa interactuando después de finalizar el ticket.
+ClaudIA responde bien, pero no en la primera interacción.
+ClaudIA tiene oportunidades en la empatía y tono de voz.
+ClaudIA tiene oportunidad en la apertura.
+Una respuesta técnicamente correcta para ClaudIA no significa que sea correcta para la experiencia del merchant. Es importante entender dónde estuvo el error de caras al cliente y llevarlo como feedback al room correspondiente.
+
+Crítico para el negocio
+Clasificación de la Conversa | Procesos de Zendesk | Issues & Problems | Knowledge Base
+03
+Guideline IQS
+
+Subcategorias
+Crítico para el Negocio
+Tópico y Subtópico
+Natureza de la Conversa
+Clasificación de la conversa
+Procesos de Zendesk
+03. Crítico para o negócio
+La categoría "Crítico para el negocio" está compuesta por cuatro criterios principales:
+
+Clasificación de la conversación
+Procesos en Zendesk
+Issues & Problems
+Knowledge Base
+
+Cada uno de ellos tiene subcategorías que nos permiten analizar en detalle diferentes aspectos de la atención, buscando siempre la excelencia en la experiencia del cliente.
+Issues & Problems
+Knowledge Base
+Manejo de Duplicados
+Identificación de usuario y organización
+Estado del ticket
+Derivaciones
+Conversación paralela
+Proceso de Issues
+Proceso de Problems
+Aplicación de Materiales
+Feedbacks
+
+Clasificación de la conversa
+
+Tópicos | Subtópicos
+Se refiere a la capacidad del agente para clasificar correctamente la interacción del cliente en Zendesk, asegurando que el tema/subtema esté acorde.
+Los campos de "tema principal" y "tema secundario" se completan automáticamente a través del campo "subtema" y serán evaluados de la misma manera, fomentando que debo ser propietario del registro correcto del caso.
+¿Qué es el criterio?
+→ Definición
+→ Puntos importantes: Campo multitópico → Completar y verificar el autocompletado del espacio 👇 
+Thumbs Up
+03. Crítico para o negócio - Classificação da conversa
+Cuando se coloca un Tópico/subtópico incorrecto.
+En casos de ser un ticket multitópico, no agregar todos los subtópicos correspondientes.
+Aplicar una macro incorrecta y no eliminar los subtópicos que agregó la macro de forma automática. 
+Cuando aplico un subtópico y no actualiza el tópico  principal y secundario correspondiente (hay que pasar el feedback a Doc&Comm)
+Colocar el tópico/subtópico del caso según la hoja  de cálculo Tópicos y subtópicos.
+Identificar, al aplicar una macro, si los subtópicos son correctos y necesarios.
+Me aseguro de que los tópicos principales y secundarios sean correctos según el subtópico incluido, y si no, necesito darle visibilidad a Doc&Comm.
+
+🚩 Al seleccionar una macro, el campo de subtema se puede completar automáticamente. Por lo tanto, se debe asegurar que el registro sea el correcto al aplicar una macro que sea incompatible con el tema que se está abordando.
+
+🚩En un campo multitópico, deben estar insertados todos los subtemas aplicables al caso.
+Thumbs Down
+
+Naturaleza de la Conversa
+Se refiere a la capacidad del agente para clasificar correctamente la interacción del cliente en Zendesk, asegurando que la naturaleza de la conversación esté acorde.
+
+¿Qué es el criterio?
+→ Definición
+→ Puntos importantes: Campo multitópico: Completar y verificar el autocompletado del espacio 👇 
+Thumbs Down
+Thumbs Up
+03. Crítico para o negócio - Classificação da conversa
+Cuando se ingrese en el campo la naturaleza de la conversa incorrecta para el caso.
+Cuando no se incluya, más de una naturaleza necesaria para calificar el caso de forma completa (cuando aplique más de una).
+
+Aplicar la naturaleza correcta según la interacción tomando como guía la hoja de cálculo  de Tópicos y Subtópicos.
+Aplicar más de una naturaleza cuando necesario.
+
+🚩Al seleccionar una macro, el campo de naturaleza se puede completar automáticamente. Por lo tanto, asegurarnos de que el registro sea correcto al aplicar una macro que sea incompatible con el tema que se está abordando.
+
+🚩Es un campo multitópico, hay que asegurarse de haber incluido todas las naturalezas aplicables al caso.
+
+
+
+Procesos de Zendesk
+Se refiere al cumplimiento adecuado de los procesos establecidos dentro de Zendesk durante todo el ciclo de vida de los tickets (bot, filtrado, equipos).
+
+Duplicates
+El agente debe identificar y gestionar correctamente las conversaciones duplicadas, vinculando los tickets duplicados cuando sea necesario, evitando información repetida o confusa.
+
+*Podemos apoyarnos en el panel de IA de Zendesk para analizar si hay tickets para fusionar.
+*Vídeo explicativo del proceso.
+¿Qué es el criterio?
+→ Definición
+→ Puntos importantes
+Thumbs Down
+Thumbs Up
+03. Crítico para o negócio - Processos Zendesk
+🚩 En el caso de que uno de los duplicados sea de WhatsApp y tenga menos de 24h, priorizamos este canal.
+🚩 Fusionamos siempre, del ticket más nuevo al más antiguo.
+Cuando fusionamos al ticket más nuevo.
+Cuando NO tenemos en cuenta el canal más sincrónico para fusionar. 
+Cuando NO fusionamos los duplicados del ticket siguiendo el proceso correspondiente.
+Cuando NO verificamos el historial del merchant.
+Cuando no aplico la macro [AR] Acción:: Cerrar conversa duplicada (solo MSG/E-MAIL) en el ticket que se cerrará.
+🚩Si no fusionamos duplicados porque no está completa la organización/usuario del ticket y esto afecta los tickets asociados, es un Thumbs Down (tanto en Duplicates como en el criterio Organización y Usuario)
+Cuando un merchant nos contacta desde una organización que no está asociada a su usuario (recomendamos usar solo 1), no es necesario realizar la búsqueda de duplicados por organización. Vamos a trabajar solo con la información que nos da el ticket (por usuario).
+
+Identificación del usuario y la organización
+El proceso de verificación y validación de la identidad del usuario y la identificación de la organización debe ser seguido de manera rigurosa para garantizar que la información y las acciones correspondan al cliente correcto.Proceso detallado
+¿Qué es el criterio?
+→ Definición
+→ Puntos importantes
+Thumbs Down
+Thumbs Up
+03. Crítico para o negócio - Processos Zendesk
+Solo asociaremos 1 organización por usuario (la más relevante), si un usuario tiene más de  1 organización, podemos incluirla en notas.
+No solicitarle al merchant el email de registro de la tienda.
+No identificar de forma correcta, según el proceso, la organización y/o el usuario.
+No colocar el ID del partner ni tildar el checkbox en Zendesk.
+No fusionar el usuario.
+Agrego una organización al contacto de Whatsapp en lugar de fusionar el usuario con un correo electrónico existente (esto evita cambiar de canal dentro de un período de 24 horas)
+Preguntarle al cliente el email de registro y dejar el ticket como pendiente.
+Identificar el usuario y la organización en el ticket.
+
+
+Si es un cliente que entra en contacto por otro canal, hay que fusionar el usuario según el proceso. Si recibe un ticket de WhatsApp, fusiono usuarios correctamente en lugar de simplemente agregar una organización. Esto permite vincular el correo electrónico al número de teléfono.
+🚩Si la identificación no es imprescindible para resolver el problema, se puede realizar después de responder a la pregunta del comerciante, para evitar un aumento en el TTR. Sin embargo, es importante asegurarse de que la operación se lleve a cabo.
+Organización de la tienda 
+Identificar si es un partner, colocar el ID de partner + tildar el checkbox correspondiente dentro de Zendesk.
+
+Estado de la conversa
+El agente debe garantizar que el estado (abierto, en espera, pendiente, resuelto, snoozed) se aplique correctamente, según el progreso de la interacción.
+
+Se evaluará si el estado de la conversación se está definiendo de acuerdo con lo que está en la Jornada del Guru - Zendesk.
+¿Qué es el criterio?
+→ Definición
+→ Puntos importantes
+Thumbs Down
+Thumbs Up
+03. Crítico para o negócio - Processos Zendesk
+Cuando enviamos el ticket como “Pendiente” cada vez que le respondemos al merchant esperando que valide el trato. Si la respuesta está completa y no hay más tópicos por responder, el ticket debe marcarse como “Snoozed” o “Resuelto”.
+Al proporcionar instrucciones para solucionar un problema, el caso debe marcarse como "Resuelto" o "Snoozed" después de la orientación, y no como "Pendiente". Nuestro papel es enseñar al usuario a resolver el problema de forma independiente, alineado con nuestro tono de voz de maestro.
+Cuando se mantiene un caso de “En espera” si ya se recibió la retroalimentación adecuada (de side conversation, derivaciones, issues/problems).
+Cuando se usan correctamente, todos los estamos disponibles en Zendesk.
+
+🚩Uso correcto de estado pendiente:
+Cuando tenemos un error de App o plataforma y necesitamos que el merchant envíe una captura para confirmar el problema. Ej: errores al intentar realizar un pago, errores de activación SSL, errores en la configuración del dominio, etc.
+Cuando necesitemos información adicional para ayudar al merchant y que imposibilite continuar brindando el servicio. Ej: Necesito: más detalles para confirmar que entiendo la pregunta, pedir una captura de pantalla para entender el error, el email de registro, información sobre la tienda para avanzar, necesito que me envíe un archivo CSV, etc.
+Cuando no tenemos claridad de la pregunta del merchant y tenemos que investigar mejor con él qué pasa.
+Cuando queremos hacer un seguimiento de las configuraciones de Domain y Social (solo Business Manager).
+Los estados de una conversación según el screensaver son: Nuevo / Abierto/  Pendiente / En espera / Resuelto / Snoozed / Cerrado.
+
+Los estados de una conversa son, según el ScreenSaver:
+
+Nuevo: es una conversación recién creada (sin asignarla a un gurú)
+
+Abierto: Esto significa que la conversación ya ha sido asignada por un agente y está trabajando en ello.
+
+Pendiente: significa que el gurú necesita información extra del merchant para poder darle una solución a su problema.
+
+En espera: significa que el gurú está esperando una resolución interna, como es el caso de TS y Finanzas.
+
+Resuelto: indica que el gurú ya respondió a la consulta del cliente. Las conversaciones permanecen en un estado resuelto hasta que se cierran.
+
+Snoozed: indica que el gurú ya respondió a la consulta del cliente, pero quiere ofrecer 2 horas de lectura antes de activar el CSAT.
+Cerrada: significa que la conversación está bloqueada y no se puede reabrir ni actualizar. El cierre de una conversación lo realiza el sistema Zendesk.
+Estado de la conversa
+03. Crítico para o negócio - Processos Zendesk
+
+Derivaciones
+El agente debe asegurarse de que está realizando el proceso adecuado de derivación, garantizando que el ticket esté en el lugar correcto sin añadir más tiempo de espera para el solicitante.
+Vídeo explicativo
+¿Qué es el criterio?
+→ Definición
+→ Puntos importantes
+Thumbs Down
+Thumbs Up
+03. Crítico para o negócio - Processos Zendesk
+Cuando aplica la macro de acción para derivar el ticket al equipo correspondiente.
+Cuando utiliza la macro “sin contexto” para entender el tema del ticket y derivarlo al equipo correspondiente.
+Cuando el ticket es multitópico y cada vez que se necesita, el gurú deriva a través de la macro de acción.
+Cuando reconozco los temas e identifico que el ticket está en el equipo correcto para que la duda siempre se resuelva lo más rápido posible.
+
+Cuando no derivamos el ticket al equipo correspondiente según la planilla de tópicos y subtópicos.. 
+Cuando el ticket tiene múltiples temas y lo dirijo manualmente, sin utilizar las macros correctas.
+Cuando no utiliza la macro “Sin Contexto” para entender el tema a tratar y derivar correctamente.
+Cuando derivo al equipo incorrecto y prolongo la duración del caso.
+Es importante derivar el ticket al equipo correcto con la macro de acción correcta para que Zendesk active sus configuraciones internas y le asigne el SLA correcto al ticket.
+
+Side Conversations (Tickets Paralelos)
+El agente debe seguir correctamente el proceso para abrir, seguir y cerrar una Side conversation.
+Una side conversation siempre será definida con el estado “En espera”*Proceso detallado.*Vídeo interactivo del proceso.
+¿Qué es el criterio?
+→ Definición
+→ Puntos importantes
+Thumbs Down
+Thumbs Up
+03. Crítico para o negócio - Processos Zendesk
+Solo respondemos si es necesario para seguir hablando del mismo tema.
+No agradecemos y solo respondemos sobre el mismo ticket si se habla del mismo tema.
+Cuando se completan correctamente los campos del tamplate para cada side conversation.
+Envío toda la información relevante, agilizando el trabajo del equipo de TS sin extender el caso más allá de lo necesario.
+*Marcar la side conversation como terminada cuando se resuelve el caso. [Recomendable]
+Cuando cerramos el ticket sin haber recibido respuesta del ticket secundario.
+Cuando envio al equipo incorrecto, ampliando la duración del caso. (Ej: Un caso de merchants para Consumer dentro de TS)
+Cuando utilizamos la side conversation para hablar de otro tema que no es el principal que abrió la conversa secundaria.
+Cuando no completo la información del template de la side conversation con todo lo que solicitan desde el equipo receptor.
+Cuando la side conversation no pertenece al equipo donde estoy respondiendo, pero cierro el ticket sin derivarlo al equipo correspondiente.
+
+Issues & Problems
+
+Issues & Problems
+El agente debe ser capaz de identificar correctamente un issue o problem (oportunidad de mejora) durante la interacción con el cliente y realizar el procedimiento correcto para documentar esa ocurrencia, tanto en Github como en Zendesk.
+
+Material de apoyo: Workshop about process
+¿Qué es el criterio?
+→ Definición
+→ Puntos importantes
+Thumbs Down
+Thumbs Up
+03. Crítico para o negócio -Issues & Problems
+Al sumar +1  correspondiente, marcando el checkbox de issues/problems y agregando el número de issue en él espació correcto. Luego, actualizar el estado de la conversa como abierto.
+Si los checkboxes de Zendesk están ocupados o agregamos un nuevo issue/problem, aplicamos la macro correspondiente. Sumamos +1 manual para issues activos o seguimos el proceso del doc.
+Espero el comentario de vinculación figurar en el ticket para seguir para el próximo
+Cuando NO sumamos el +1 en el issue/Problem correspondiente.
+Cuando sumamos +1 en el issue/problem incorrecto.
+De no exitir, NO creamos el issue/problem.
+Si el issue/problem está cerrado, NO abrir un issue/problem nuevo sumando el caso cerrado y explicando el nuevo comportamiento asociado.
+Si las dos casillas de checkbox de Zendesk están utilizadas, NO sumamos el +1 de forma manual, si no se realiza es un Thumbs Down en el criterio.
+Cuando NO se solicita triage a un issue nuevo.
+Cuando cerramos un tkt sin darle visibilidad al merchant del estado de su reporte. (No solicitamos triage + resolvemos el tkt)
+Sumar un comentario de +1 con datos incompletos.
+No uso la casilla de verificación y no completo el campo “Número (#) Problema/Problema”
+No espero que Zendesk se vincule con Github de forma automatica
+
+Cuando no indicamos ninguna medida paliativa para el Problem, es Thumbs Down en el criterio de Complete/Correct.
+
+Knowledge Base
+Se refiere al uso apropiado de los materiales de soporte disponibles para resolver la consulta del cliente.
+
+Aplicación de los materiales
+El guru debe utilizar de manera eficiente los recursos disponibles, como los artículos, documentos de procesos (Guide) y macros, para garantizar que la información proporcionada esté alineada con las políticas y procedimientos de la empresa. Además, es importante que los recursos sean utilizados siempre que sea posible, como, por ejemplo, las macros.
+¿Qué es el criterio?
+→ Definición
+→ Puntos importantes
+Thumbs Down
+Thumbs Up
+03. Crítico para o negócio -Knowledge Base
+Aplicamos una macro para responder la consulta del merchant
+Aplicamos una macro creada por nosotros para responder la consulta.
+🚩Cuando eso sucede también es un Thumbs Down dentro de “Feedback”, porque no nos contactamos desde el room #macros-feedback-ar-mx para sumar dicha información.
+
+Cuando no aplicamos macro de derivación y modificamos la casilla de forma manual.
+Cuando no le brindamos al merchant tutoriales de guía para avanzar con sus necesidades.
+Cuando no consultamos ni utilizamos artículos de la base de conocimientos, macros o documentos de procesos que podrían haber facilitado una respuesta más rápida y precisa.
+Cuando aplicamos una macro que es incompatible con el tema, lo que puede impedir que el cliente responda al CSAT (Gracias, cerrar spam, etc.)
+Cuando compartimos un tutorial para guiar o sumarle información relevante al merchant.
+Cuando utilizamos artículos, guías y macros de manera eficiente para proporcionar respuestas rápidas, claras y alineadas con las políticas y procedimientos de la empresa.
+Debemos siempre consultar la base de conocimiento y los documentos de proceso antes de responder las consultas de los clientes.
+
+Feedbacks
+Cuando se encuentra con una oportunidad de mejora en los recursos, proactivamente lleva el feedback para que el equipo responsable de la información, para que pueda actualizar el contenido.
+¿Qué es el criterio?
+→ Definición
+→ Puntos importantes
+Thumbs Down
+Thumbs Up
+03. Crítico para o negócio -Knowledge Base
+Cuando el gurú no reporta en el room de #bot-feedback-ar posibilidades de mejora en las respuestas de Claudia.
+Cuando el gurú no reporta feedback sobre macros en #macros-feedback-ar/mx
+Cuando el gurú no reporta feedback sobre posibilidades de mejora en el CAN #bot-feedback-ar
+Cuando no reporto un feedback de documentaciones o subtópicos/tópicos en #support-documentação-feedback-ar
+Cuando se reporta feedback de Claudia en el room #bot-feedback-ar
+Cuando se reporta feedback sobre macros en el room #macros-feedback-ar-mx
+Cuando se suma +1 en el problem correspondiente.
+Cuando se reporta feedback de documentaciones o subtópicos/tópicos en #support-documentação-feedback-ar
+Brindar y recibir feedback es parte de nuestra cultura y nuestro crecimiento. Es muy importante comprender que en cada posibilidad de pasar feedback que no aprovechamos, el más afectado es el merchant consumiendo información desactualizada.
+
+Técnicas para mejorar nuestra calidad de atención
+
+Método H.E.A.R.D
+
+
+
+
+
+
+
+
+
+
+
+

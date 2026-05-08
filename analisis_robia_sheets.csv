@@ -1,0 +1,10 @@
+﻿Ticket ID;Guru Name;Criterio;Score;Reasoning;RC
+7106957;Azul C. de Tiendanube;Opening;0.5;A saudação foi correta, porém um pouco mecânica e seguiu com uma instrução direta sem excesso de calor humano.;Saudação correta (protocolar), porém pouco calorosa ou mecânica
+7106991;Agustín V. de Tiendanube;Opening;0;Agustín iniciou o atendimento com uma saudação calorosa, utilizando o nome do cliente e demonstrando prontidão e disponibilidade para ajudar.;Dá boas-vindas cordiais e demonstra disponibilidade imediata
+7107167;;Opening;0;Azul abriu a conversa com uma saudação calorosa, identificando-se pelo nome e mostrando disponibilidade para ajudar.;Dá boas-vindas cordiais e demonstra disponibilidade imediata
+7107167;;Tone;0;O tom foi motivador e próximo, mantendo a empatia e motivação sem ser excessivamente formal.;Equilíbrio perfeito: Motivador, Realista e Próximo (Brand Voice)
+7107167;;Personalization;0;Azul personalizou a resposta ao usar informações específicas do cliente e fornecer soluções customizadas baseadas nas capturas de tela e na situação apresentada.;Usa as informações técnicas e evidências visuais/auditivas (OCR de prints ou áudios) para customizar a resposta
+7107167;;Empathy;0;Cenário neutro: Azul respondeu de forma cordial e profissional, suficiente dado que o cliente não demonstrou emoção explícita.;Cenário Neutro: Interação fluida e cordial (Cliente não demonstrou emoção explícita)
+7107167;;Clarity;0;As instruções fornecidas foram claras e diretas, com links para artigos detalhados e uso de formatação clara para facilitar a compreensão.;Instrução livre de ambiguidades (o cliente sabe exatamente o que fazer)
+7107167;;Pyramidal Structure;0;Azul respondeu diretamente às questões do cliente antes de fornecer detalhes adicionais, mantendo uma estrutura organizada.;Answer First: Começa respondendo diretamente à dúvida principal
+7107167;;Continuity;0;Azul conectou as evidências apresentadas pelo cliente com as soluções propostas, ajustando o suporte ao longo da interação conforme necessário.;Conecta evidências anteriores à solução atual (Lógica)

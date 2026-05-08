@@ -267,28 +267,40 @@ def _evaluar_pending_post_solved(
 
 
 def _cargar_tickets_con_side_conv(ticket_ids: Iterable[int]) -> tuple[set[int], str | None]:
-    """Devuelve (set de ticket_ids con al menos una side conv, error_o_None).
+    """Devuelve (set de ticket_ids con al menos una side conv abierta desde
+    ellos, error_o_None).
 
-    La vista ``g__general__side_conversations__agg_ticket`` puede no existir
-    en algunos entornos o no tener datos para los tickets pedidos. Si la query
-    falla, devolvemos un error string para que la regla degrade a
-    ``no_evaluable`` en lugar de crashear.
+    Nota crítica sobre la vista ``g__general__side_conversations__agg_ticket``:
+
+    - ``sd_ticket_id`` es el ID de la **side conversation** (un ticket nuevo
+      que crea Zendesk). NO es el ticket original.
+    - ``sd_parent_ticket_id`` es el ticket **padre**, el que tenemos en la
+      muestra. Es **string** en el lake.
+
+    Por eso filtramos por ``sd_parent_ticket_id`` (cast a string).
     """
     ids = sorted({int(t) for t in ticket_ids})
     if not ids:
         return set(), None
-    in_clause = ", ".join(str(t) for t in ids)
+    in_clause = ", ".join(f"'{t}'" for t in ids)
     try:
         rows = db.fetch(
             f"""
-            SELECT DISTINCT sd_ticket_id
+            SELECT DISTINCT sd_parent_ticket_id
             FROM {db.FQN}.`{TABLA_SIDE_CONV}`
-            WHERE sd_ticket_id IN ({in_clause})
+            WHERE sd_parent_ticket_id IN ({in_clause})
             """
         )
     except Exception as e:  # noqa: BLE001
         return set(), str(e)
-    return {int(r[0]) for r in rows if r and r[0] is not None}, None
+    out: set[int] = set()
+    for r in rows:
+        if r and r[0] is not None:
+            try:
+                out.add(int(r[0]))
+            except (ValueError, TypeError):
+                continue
+    return out, None
 
 
 def _detectar_tramos_hold(

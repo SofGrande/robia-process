@@ -31,9 +31,9 @@ class CatalogoTests(unittest.TestCase):
         # construimos un catálogo en memoria sin tocar el Sheet
         self.catalogo = cat._construir_desde_filas(
             combinaciones=[
-                ("AR", "Online", "Configuraciones Online", "Idiomas Y Monedas"),
-                ("AR", "Pago Nube", "Cuenta", "Cuotas - Pago Nube"),
-                ("BR", "Configurações Essenciais", "Account", "2FA"),
+                ("AR", "", "Online", "Configuraciones Online", "Idiomas Y Monedas"),
+                ("AR", "", "Pago Nube", "Cuenta", "Cuotas - Pago Nube"),
+                ("BR", "", "Configurações Essenciais", "Account", "2FA"),
             ],
             naturalezas=[
                 ("LATAM", "Duda Autoatención"),

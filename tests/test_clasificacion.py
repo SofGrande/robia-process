@@ -22,8 +22,8 @@ from robia_procesos.reglas.clasificacion_topico import (
 def _catalogo_fixture() -> cat.Catalogo:
     return cat._construir_desde_filas(
         combinaciones=[
-            ("AR", "Online", "Configuraciones Online", "Idiomas Y Monedas"),
-            ("AR", "Pago Nube", "Cuenta", "Cuotas - Pago Nube"),
+            ("AR", "", "Online", "Configuraciones Online", "Idiomas Y Monedas"),
+            ("AR", "", "Pago Nube", "Cuenta", "Cuotas - Pago Nube"),
         ],
         naturalezas=[
             ("LATAM", "Duda Autoatención"),
@@ -193,9 +193,9 @@ class TopicoGeografiaTests(unittest.TestCase):
         # tripla "X / Y / Z_AR" SOLO en hoja AR (LATAM); "A / B / C_BR" SOLO en BR
         self.catalogo = cat._construir_desde_filas(
             combinaciones=[
-                ("AR_Tópicos_Zendesk/Slack", "X", "Y", "Z_AR"),
-                ("[BR] Tópicos Zendesk/Slack", "A", "B", "C_BR"),
-                ("LATAM_Tópicos_Zendesk/Slack", "Compartido", "Sec", "Sub"),
+                ("AR_Tópicos_Zendesk/Slack", "", "X", "Y", "Z_AR"),
+                ("[BR] Tópicos Zendesk/Slack", "", "A", "B", "C_BR"),
+                ("LATAM_Tópicos_Zendesk/Slack", "", "Compartido", "Sec", "Sub"),
             ],
             naturalezas=[("LATAM", "Issue")],
         )

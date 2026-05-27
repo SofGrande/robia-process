@@ -6,10 +6,37 @@ Credenciales/
 
 # Cache local del catálogo Sheets y dumps de descubrimiento
 _cache_*.csv
+_cache_slack/
+_cache_zendesk/
 _topicos_raw_dump.json
 _topicos_resumen.txt
 _geo_descubrir.txt
 _smoke_test_*
+_smoke_*.py
+
+# Scripts de exploración local y dumps (prefijo _).
+# Excepción: docs de discovery (_discovery_*.md) y _estado_proyecto.md SÍ se commitean.
+_auditoria_*.json
+_auditoria_*.txt
+_mastertrack_*.json
+_rc_catalogos.json
+_rcs_para_procesos.csv
+_inspeccion_*.txt
+_calibrar_*.py
+_check_*.py
+_descubrir_*.py
+_inspeccionar_*.py
+_investigar_*.py
+_subir_*.py
+_correr_*.py
+
+# CSVs grandes locales que no van al repo (snapshots Master Track, etc.)
+\[CX*Ops\]*.csv
+\[Support\]*.csv
+RobIA_Procesos_*.csv
+analisis_robia_sheets.csv
+data_cx_*.csv
+match_iqs_criterios_*.csv
 
 # Python
 __pycache__/

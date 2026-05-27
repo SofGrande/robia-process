@@ -49,11 +49,12 @@ CACHE_NATURALEZAS = _ROOT / "_cache_naturalezas.csv"
 # Edad máxima del cache antes de avisar que conviene refrescar (no es error).
 CACHE_TTL_DIAS = 14
 
-# (nombre_hoja, fila_header_0idx, col_main_0idx, col_sec_0idx, col_sub_0idx)
-HOJAS_TOPICOS: list[tuple[str, int, int, int, int]] = [
-    ("AR_Tópicos_Zendesk/Slack", 2, 1, 2, 3),
-    ("LATAM_Tópicos_Zendesk/Slack", 1, 0, 1, 2),
-    ("[BR] Tópicos Zendesk/Slack", 1, 1, 2, 5),
+# (nombre_hoja, fila_header_0idx, col_equipo_0idx | None, col_main_0idx, col_sec_0idx, col_sub_0idx)
+# col_equipo None = hoja sin columna de equipo (LATAM genérico).
+HOJAS_TOPICOS: list[tuple[str, int, int | None, int, int, int]] = [
+    ("AR_Tópicos_Zendesk/Slack", 2, 0, 1, 2, 3),
+    ("LATAM_Tópicos_Zendesk/Slack", 1, None, 0, 1, 2),
+    ("[BR] Tópicos Zendesk/Slack", 1, 0, 1, 2, 5),
 ]
 
 # (nombre_hoja, fila_inicio_datos, col_naturaleza_0idx)
@@ -111,6 +112,10 @@ class Catalogo:
     )
     # solo para diagnóstico humano:
     combinaciones_originales: tuple[tuple[str, str, str], ...] = field(default=())
+    # (equipo, main, sec, sub) — equipo viene de col 0 de hojas AR y BR
+    # (LATAM no tiene col equipo, queda string vacío). Usado por sub-reglas
+    # LLM para filtrar el catálogo por equipo del ticket.
+    combinaciones_con_equipo: tuple[tuple[str, str, str, str], ...] = field(default=())
     naturalezas_originales: tuple[str, ...] = field(default=())
 
     def combinacion_valida(self, main: str, sec: str, sub: str) -> bool:
@@ -149,17 +154,41 @@ def _abrir_sheet():
     return gspread.authorize(creds).open_by_key(SHEET_ID)
 
 
-def _extraer_topicos(rows: list[list[str]], fila_header: int, c_main: int, c_sec: int, c_sub: int) -> list[tuple[str, str, str]]:
-    out: list[tuple[str, str, str]] = []
+def _extraer_topicos(
+    rows: list[list[str]],
+    fila_header: int,
+    c_equipo: int | None,
+    c_main: int,
+    c_sec: int,
+    c_sub: int,
+) -> list[tuple[str, str, str, str]]:
+    """Devuelve tuplas (equipo, main, sec, sub).
+
+    Aplica **fill-down** sobre la columna equipo: en el Sheet, los headers
+    de equipo suelen estar en una sola fila y las filas siguientes heredan
+    el valor (visualmente vía merge cells o porque humanos lo entienden).
+    Acá los rellenamos explícitamente para que cada fila tenga su equipo.
+    """
+    out: list[tuple[str, str, str, str]] = []
+    equipo_actual = ""
+    cols_requeridas = [c_main, c_sec, c_sub]
+    if c_equipo is not None:
+        cols_requeridas.append(c_equipo)
     for fila in rows[fila_header + 1 :]:
-        if max(c_main, c_sec, c_sub) >= len(fila):
+        if max(cols_requeridas) >= len(fila):
             continue
+        # Fill-down del equipo: si la celda tiene valor, actualizamos el "actual";
+        # si está vacía, heredamos del anterior.
+        if c_equipo is not None:
+            celda_equipo = (fila[c_equipo] or "").strip()
+            if celda_equipo:
+                equipo_actual = celda_equipo
         sub = (fila[c_sub] or "").strip()
         if not sub:
             continue  # filas-separador: solo header de equipo o tópico, sin subtópico
         main = (fila[c_main] or "").strip()
         sec = (fila[c_sec] or "").strip()
-        out.append((main, sec, sub))
+        out.append((equipo_actual, main, sec, sub))
     return out
 
 
@@ -177,11 +206,13 @@ def _extraer_naturalezas(rows: list[list[str]], fila_inicio: int, c_nat: int) ->
 def refrescar_cache() -> Catalogo:
     """Lee el Sheet y reescribe `_cache_topicos.csv` y `_cache_naturalezas.csv`."""
     sh = _abrir_sheet()
-    combinaciones: list[tuple[str, str, str, str]] = []  # (geo, main, sec, sub)
-    for nombre, fila_header, c_main, c_sec, c_sub in HOJAS_TOPICOS:
+    combinaciones: list[tuple[str, str, str, str, str]] = []  # (geo, equipo, main, sec, sub)
+    for nombre, fila_header, c_equipo, c_main, c_sec, c_sub in HOJAS_TOPICOS:
         rows = sh.worksheet(nombre).get_all_values()
-        for main, sec, sub in _extraer_topicos(rows, fila_header, c_main, c_sec, c_sub):
-            combinaciones.append((nombre, main, sec, sub))
+        for equipo, main, sec, sub in _extraer_topicos(
+            rows, fila_header, c_equipo, c_main, c_sec, c_sub
+        ):
+            combinaciones.append((nombre, equipo, main, sec, sub))
 
     naturalezas: list[tuple[str, str]] = []  # (geo, valor)
     for nombre, fila_inicio, c_nat in HOJAS_NATURALEZA:
@@ -191,7 +222,9 @@ def refrescar_cache() -> Catalogo:
 
     with CACHE_TOPICOS.open("w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
-        w.writerow(["geografia", "topico_principal", "topico_secundario", "subtopico"])
+        w.writerow(
+            ["geografia", "equipo", "topico_principal", "topico_secundario", "subtopico"]
+        )
         w.writerows(combinaciones)
 
     with CACHE_NATURALEZAS.open("w", newline="", encoding="utf-8") as f:
@@ -203,11 +236,16 @@ def refrescar_cache() -> Catalogo:
 
 
 def _construir_desde_filas(
-    combinaciones: list[tuple[str, str, str, str]],
+    combinaciones: list[tuple[str, str, str, str, str]],
     naturalezas: list[tuple[str, str]],
 ) -> Catalogo:
-    triplas = [(m, s, sb) for _, m, s, sb in combinaciones]
+    """Construye Catalogo desde filas (geo, equipo, main, sec, sub)."""
+    # Compat: las "triplas" sin equipo siguen siendo el contrato público
+    # de `combinaciones_originales`.
+    triplas = [(m, s, sb) for _, _, m, s, sb in combinaciones]
+    cuartetos = [(eq, m, s, sb) for _, eq, m, s, sb in combinaciones]
     nats = [v for _, v in naturalezas]
+
     combinaciones_norm = frozenset(
         (normalizar(m), normalizar(s), normalizar(sb)) for m, s, sb in triplas
     )
@@ -215,7 +253,7 @@ def _construir_desde_filas(
     naturalezas_norm = frozenset(normalizar(v) for v in nats)
 
     por_hoja: dict[str, set[tuple[str, str, str]]] = defaultdict(set)
-    for hoja, m, s, sb in combinaciones:
+    for hoja, _eq, m, s, sb in combinaciones:
         por_hoja[hoja].add((normalizar(m), normalizar(s), normalizar(sb)))
     combinaciones_por_hoja = {h: frozenset(s) for h, s in por_hoja.items()}
 
@@ -225,6 +263,7 @@ def _construir_desde_filas(
         naturalezas_norm=naturalezas_norm,
         combinaciones_por_hoja=combinaciones_por_hoja,
         combinaciones_originales=tuple(triplas),
+        combinaciones_con_equipo=tuple(cuartetos),
         naturalezas_originales=tuple(sorted(set(nats))),
     )
 
@@ -233,11 +272,18 @@ def _leer_cache() -> Catalogo:
     if not CACHE_TOPICOS.exists() or not CACHE_NATURALEZAS.exists():
         raise FileNotFoundError("cache no existe; correr refrescar_cache() primero")
 
-    combinaciones: list[tuple[str, str, str, str]] = []
+    combinaciones: list[tuple[str, str, str, str, str]] = []
     with CACHE_TOPICOS.open(encoding="utf-8") as f:
         for r in csv.DictReader(f):
+            # `equipo` puede faltar en caches viejos (pre-2026-05-13); default ""
             combinaciones.append(
-                (r["geografia"], r["topico_principal"], r["topico_secundario"], r["subtopico"])
+                (
+                    r["geografia"],
+                    r.get("equipo", ""),
+                    r["topico_principal"],
+                    r["topico_secundario"],
+                    r["subtopico"],
+                )
             )
 
     naturalezas: list[tuple[str, str]] = []

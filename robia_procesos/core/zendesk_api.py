@@ -265,6 +265,16 @@ def get_ticket_custom_field(ticket_id: int, field_id: int) -> str | None:
     return None
 
 
+def get_ticket_audits(ticket_id: int) -> list[dict]:
+    """Devuelve la lista completa de audits del ticket (con paginación).
+
+    Cada audit registra TODOS los cambios de campos del ticket con su autor
+    (incluido el sistema con ``author_id = -1``). Es la única fuente de
+    cambios de ``organization_id`` (el lake no los trackea).
+    """
+    return list(_paginate(f"/api/v2/tickets/{ticket_id}/audits.json", key="audits"))
+
+
 def get_user(user_id: int) -> dict:
     """Devuelve el user completo: email, phone, organization_id, name, etc."""
     data = _request("GET", f"/api/v2/users/{user_id}.json")

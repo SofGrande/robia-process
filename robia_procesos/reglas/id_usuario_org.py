@@ -86,24 +86,91 @@ def _es_ticket_de_partner(ticket: dict, comments: list[dict]) -> tuple[bool, str
 # ────────────────────── Sub-regla 2.2 — Organización asociada ──────────────────────
 
 
+AUTHOR_SYSTEM = -1  # author_id usado por Zendesk para triggers/automatizaciones
+
+
 def _evaluar_organizacion(ticket_id: int, ticket: dict) -> CriterioEvaluado:
-    """Regla canónica Sofía: TODO ticket DEBE tener organización asociada."""
-    org_id = ticket.get("organization_id")
-    if org_id:
+    """Evalúa si el guru asoció la organización cuando hacía falta.
+
+    Regla refinada (Sofía 2026-05-27): el criterio mide la **acción del guru**,
+    no el estado final. Tres escenarios:
+
+    1. Org ya estaba al crear el ticket / se asoció por trigger automático
+       (sin author humano): **N/A** — el guru no tuvo que hacer nada.
+    2. Org era None al inicio y un guru la asoció manualmente: **THUMBS_UP**.
+    3. Ticket cerró sin organización asociada: **THUMBS_DOWN**.
+    """
+    org_id_final = ticket.get("organization_id")
+
+    # Caso 3: cerró sin org
+    if not org_id_final:
         return CriterioEvaluado(
             ticket_id=ticket_id,
             criterio=CRITERIO,
             sub_regla="organizacion_asociada",
-            resultado=Resultado.THUMBS_UP,
-            regla="Organización: Asociada con éxito.",
+            resultado=Resultado.THUMBS_DOWN,
+            regla="Organización: No se asoció ninguna al ticket. Todo ticket debe tener una organización asociada.",
             confianza=Confianza.DIRECTA,
         )
+
+    # Tiene org al final — distinguir si fue acción del guru o vino sola.
+    try:
+        audits = zd.get_ticket_audits(ticket_id)
+    except Exception:
+        # Si falla audits, somos conservadores: marcamos N/A para no inventar.
+        return CriterioEvaluado(
+            ticket_id=ticket_id,
+            criterio=CRITERIO,
+            sub_regla="organizacion_asociada",
+            resultado=Resultado.NO_EVALUABLE,
+            regla="Organización: No se pudo verificar el historial de cambios del ticket.",
+            confianza=Confianza.HEURISTICA,
+        )
+
+    # Buscar el primer evento que setea organization_id de None a un valor.
+    primer_asociacion: dict | None = None
+    for audit in audits:
+        for ev in audit.get("events", []):
+            if ev.get("field_name") != "organization_id":
+                continue
+            if ev.get("previous_value") is None and ev.get("value") is not None:
+                primer_asociacion = {
+                    "author_id": audit.get("author_id"),
+                    "audit_id": audit.get("id"),
+                }
+                break
+        if primer_asociacion:
+            break
+
+    if primer_asociacion is None:
+        # Org está pero nunca apareció un evento de cambio → vino al crear.
+        return CriterioEvaluado(
+            ticket_id=ticket_id,
+            criterio=CRITERIO,
+            sub_regla="organizacion_asociada",
+            resultado=Resultado.NO_EVALUABLE,
+            regla="Organización: El ticket se creó con organización asociada, no requirió acción del guru.",
+            confianza=Confianza.DIRECTA,
+        )
+
+    if primer_asociacion["author_id"] == AUTHOR_SYSTEM:
+        # Trigger / automatización Zendesk — no fue acción del guru.
+        return CriterioEvaluado(
+            ticket_id=ticket_id,
+            criterio=CRITERIO,
+            sub_regla="organizacion_asociada",
+            resultado=Resultado.NO_EVALUABLE,
+            regla="Organización: Se asoció automáticamente por una regla de Zendesk, no requirió acción del guru.",
+            confianza=Confianza.DIRECTA,
+        )
+
+    # Humano asoció la organización manualmente.
     return CriterioEvaluado(
         ticket_id=ticket_id,
         criterio=CRITERIO,
         sub_regla="organizacion_asociada",
-        resultado=Resultado.THUMBS_DOWN,
-        regla="Organización: No se asoció ninguna al ticket. Todo ticket debe tener una organización asociada.",
+        resultado=Resultado.THUMBS_UP,
+        regla="Organización: El guru identificó al cliente y asoció la organización manualmente.",
         confianza=Confianza.DIRECTA,
     )
 

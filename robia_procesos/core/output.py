@@ -19,10 +19,10 @@ from robia_procesos.core.contrato import CriterioEvaluado, Resultado
 # Mapping criterio (proceso) → orden de aparición en el output.
 # El nombre debe coincidir EXACTO con el `criterio` que devuelve cada evaluador.
 PROCESOS_ORDEN: tuple[str, ...] = (
-    "Procesos Zendesk - Derivações",
-    "Procesos Zendesk - Id Usuario/Org",
-    "Procesos Zendesk - Duplicates",
-    "Procesos Zendesk - Estado da Conversa",
+    "Derivações",
+    "Id Usuario/Org",
+    "Duplicates",
+    "Estado da Conversa",
 )
 
 
@@ -74,29 +74,34 @@ def _agregar_score(criterios: list[CriterioEvaluado]) -> str:
 
 
 def _formatear_reasoning(criterios: list[CriterioEvaluado]) -> str:
-    """Enumera cada sub-regla y su resultado en formato leíble.
+    """Formato amigable para columna H — emoji por resultado + texto de la regla.
 
-    Ejemplo de salida (3 sub-reglas de Derivaciones):
+    Cada sub-regla debe redactar su ``regla`` como ``"{Etiqueta}: {descripción}"``
+    en lenguaje conversacional, sin IDs largos ni nombres técnicos. Acá solo
+    prependemos el emoji y concatenamos.
 
-        Triagem derivó OK: macro 45429138530708 aplicada por Triagem
-        a las 15:07:42 (author no es assignee). Equipo destino coherente.
-        Guru derivó: N/A (no hubo derivación intermedia adicional).
-        ADA: N/A (no pasó por ADA).
+    Ejemplo de salida (4 sub-reglas de Id Usuario/Org en un caso OK):
+
+        ✅ Organización: Asociada con éxito.
+        ✅ Canal WhatsApp: El cliente ya tiene un correo registrado;
+            no hizo falta fusionar cuentas.
+        ⚪ Estado Partner: El ticket no pertenece a un partner.
+        ⚪ Partner ID: El ticket no pertenece a un partner.
     """
     if not criterios:
         return ""
-    bloques: list[str] = []
+    EMOJI = {
+        Resultado.THUMBS_UP: "✅",
+        Resultado.THUMBS_DOWN: "❌",
+        Resultado.NO_EVALUABLE: "⚪",
+    }
+    lineas: list[str] = []
     for c in criterios:
-        prefix = {
-            Resultado.THUMBS_UP: "✓",
-            Resultado.THUMBS_DOWN: "✗",
-            Resultado.NO_EVALUABLE: "—",
-        }[c.resultado]
-        linea = f"{prefix} {c.sub_regla}: {c.regla}"
+        linea = f"{EMOJI[c.resultado]} {c.regla}"
         if c.nota:
-            linea += f" — {c.nota}"
-        bloques.append(linea)
-    return "\n".join(bloques)
+            linea += f" ({c.nota})"
+        lineas.append(linea)
+    return "\n".join(lineas)
 
 
 def _formatear_rcs(criterios: list[CriterioEvaluado]) -> str:

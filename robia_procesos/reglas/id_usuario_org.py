@@ -24,7 +24,7 @@ from robia_procesos.core.contrato import (
     Resultado,
 )
 
-CRITERIO = "Procesos Zendesk - Id Usuario/Org"
+CRITERIO = "Id Usuario/Org"
 
 # Custom field IDs (ver memoria reference_ids_zendesk)
 FIELD_ES_PARTNER = 9470656687892        # checkbox "Es partner?"
@@ -95,7 +95,7 @@ def _evaluar_organizacion(ticket_id: int, ticket: dict) -> CriterioEvaluado:
             criterio=CRITERIO,
             sub_regla="organizacion_asociada",
             resultado=Resultado.THUMBS_UP,
-            regla=f"Organización asociada (id={org_id})",
+            regla="Organización: Asociada con éxito.",
             confianza=Confianza.DIRECTA,
         )
     return CriterioEvaluado(
@@ -103,9 +103,8 @@ def _evaluar_organizacion(ticket_id: int, ticket: dict) -> CriterioEvaluado:
         criterio=CRITERIO,
         sub_regla="organizacion_asociada",
         resultado=Resultado.THUMBS_DOWN,
-        regla="No asoció organización",
+        regla="Organización: No se asoció ninguna al ticket. Todo ticket debe tener una organización asociada.",
         confianza=Confianza.DIRECTA,
-        nota="Regla canónica: todo ticket debe tener organización asociada.",
     )
 
 
@@ -129,7 +128,7 @@ def _evaluar_fusion_usuario(ticket_id: int, ticket: dict) -> CriterioEvaluado:
             criterio=CRITERIO,
             sub_regla="fusion_usuario_whatsapp",
             resultado=Resultado.NO_EVALUABLE,
-            regla="Canal no es WhatsApp; sub-regla no aplica",
+            regla="Canal WhatsApp: El ticket no entró por WhatsApp.",
             confianza=Confianza.DIRECTA,
         )
 
@@ -140,21 +139,20 @@ def _evaluar_fusion_usuario(ticket_id: int, ticket: dict) -> CriterioEvaluado:
             criterio=CRITERIO,
             sub_regla="fusion_usuario_whatsapp",
             resultado=Resultado.NO_EVALUABLE,
-            regla="Canal WA pero sin organización — no se puede buscar duplicados",
+            regla="Canal WhatsApp: Entró por WhatsApp pero sin organización asociada, no se puede verificar fusión.",
             confianza=Confianza.DIRECTA,
-            nota="Para auditar fusión WA hace falta organización asociada (ver sub-regla 2.2).",
         )
 
     requester_id = ticket.get("requester_id")
     try:
         requester = zd.get_user(requester_id) if requester_id else {}
-    except Exception as e:
+    except Exception:
         return CriterioEvaluado(
             ticket_id=ticket_id,
             criterio=CRITERIO,
             sub_regla="fusion_usuario_whatsapp",
             resultado=Resultado.NO_EVALUABLE,
-            regla=f"Error consultando requester: {e}",
+            regla="Canal WhatsApp: No se pudo consultar al usuario del ticket.",
             confianza=Confianza.HEURISTICA,
         )
 
@@ -164,20 +162,19 @@ def _evaluar_fusion_usuario(ticket_id: int, ticket: dict) -> CriterioEvaluado:
             criterio=CRITERIO,
             sub_regla="fusion_usuario_whatsapp",
             resultado=Resultado.THUMBS_UP,
-            regla="Canal WA pero requester ya tiene email — no requiere fusión",
+            regla="Canal WhatsApp: El cliente ya tiene un correo registrado; no hizo falta fusionar cuentas.",
             confianza=Confianza.DIRECTA,
         )
 
-    # Buscar otros usuarios de la org con email
     try:
         users = zd.search_users_by_org(org_id)
-    except Exception as e:
+    except Exception:
         return CriterioEvaluado(
             ticket_id=ticket_id,
             criterio=CRITERIO,
             sub_regla="fusion_usuario_whatsapp",
             resultado=Resultado.NO_EVALUABLE,
-            regla=f"Error buscando usuarios de la org: {e}",
+            regla="Canal WhatsApp: No se pudo buscar otras cuentas del cliente en la organización.",
             confianza=Confianza.HEURISTICA,
         )
 
@@ -186,15 +183,13 @@ def _evaluar_fusion_usuario(ticket_id: int, ticket: dict) -> CriterioEvaluado:
         if u.get("id") != requester_id and u.get("email")
     ]
     if otros_con_email:
-        nombres = ", ".join(u.get("email", "?") for u in otros_con_email[:3])
         return CriterioEvaluado(
             ticket_id=ticket_id,
             criterio=CRITERIO,
             sub_regla="fusion_usuario_whatsapp",
             resultado=Resultado.THUMBS_DOWN,
-            regla="No fusionó usuario WA con cuenta email existente",
+            regla="Canal WhatsApp: El cliente tiene otra cuenta con email en la misma organización que no se fusionó al ticket.",
             confianza=Confianza.PARCIAL,
-            nota=f"Existen otros users en la org con email: {nombres}",
         )
 
     return CriterioEvaluado(
@@ -202,7 +197,7 @@ def _evaluar_fusion_usuario(ticket_id: int, ticket: dict) -> CriterioEvaluado:
         criterio=CRITERIO,
         sub_regla="fusion_usuario_whatsapp",
         resultado=Resultado.THUMBS_UP,
-        regla="WA sin email, pero no hay otro user en la org con email — sin candidato a fusión",
+        regla="Canal WhatsApp: El cliente entró por WhatsApp y no tiene otra cuenta para fusionar.",
         confianza=Confianza.PARCIAL,
     )
 
@@ -223,7 +218,7 @@ def _evaluar_partner_checkbox(
             criterio=CRITERIO,
             sub_regla="es_partner_checkbox",
             resultado=Resultado.NO_EVALUABLE,
-            regla="Ticket no identificado como partner — sub-regla no aplica",
+            regla="Estado Partner: El ticket no pertenece a un partner.",
             confianza=Confianza.DIRECTA,
         )
 
@@ -234,9 +229,8 @@ def _evaluar_partner_checkbox(
             criterio=CRITERIO,
             sub_regla="es_partner_checkbox",
             resultado=Resultado.THUMBS_UP,
-            regla="Checkbox 'Es partner?' tildado correctamente",
+            regla="Estado Partner: El checkbox 'Es partner?' está tildado correctamente.",
             confianza=Confianza.DIRECTA,
-            nota=f"Identificado como partner por: {razon_partner}",
         )
 
     return CriterioEvaluado(
@@ -244,9 +238,8 @@ def _evaluar_partner_checkbox(
         criterio=CRITERIO,
         sub_regla="es_partner_checkbox",
         resultado=Resultado.THUMBS_DOWN,
-        regla="No tildó checkbox 'Es partner?'",
+        regla="Estado Partner: El ticket pertenece a un equipo de Partners pero no se tildó el checkbox 'Es partner?'.",
         confianza=Confianza.DIRECTA,
-        nota=f"Identificado como partner por: {razon_partner}",
     )
 
 
@@ -263,7 +256,7 @@ def _evaluar_partner_id(
             criterio=CRITERIO,
             sub_regla="partner_id_cargado",
             resultado=Resultado.NO_EVALUABLE,
-            regla="Ticket no identificado como partner — sub-regla no aplica",
+            regla="Partner ID: El ticket no pertenece a un partner.",
             confianza=Confianza.DIRECTA,
         )
 
@@ -274,9 +267,8 @@ def _evaluar_partner_id(
             criterio=CRITERIO,
             sub_regla="partner_id_cargado",
             resultado=Resultado.THUMBS_UP,
-            regla=f"Partner ID cargado (={partner_id})",
+            regla="Partner ID: Cargado correctamente.",
             confianza=Confianza.DIRECTA,
-            nota=f"Identificado como partner por: {razon_partner}",
         )
 
     return CriterioEvaluado(
@@ -284,9 +276,8 @@ def _evaluar_partner_id(
         criterio=CRITERIO,
         sub_regla="partner_id_cargado",
         resultado=Resultado.THUMBS_DOWN,
-        regla="No cargó Partner ID",
+        regla="Partner ID: El ticket pertenece a un equipo de Partners pero no se cargó el Partner ID.",
         confianza=Confianza.DIRECTA,
-        nota=f"Identificado como partner por: {razon_partner}",
     )
 
 

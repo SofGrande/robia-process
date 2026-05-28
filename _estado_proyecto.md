@@ -1,31 +1,40 @@
 # RobIA Procesos — Estado del Proyecto
 
-**Última actualización:** 2026-05-08
+**Última actualización:** 2026-05-28
 **Owner:** Sofía Grande (sofia.grande@tiendanube.com)
 **Repo de trabajo:** https://github.com/SofGrande/robia-process (privado)
 **Repo padre planificado:** https://github.com/TiendaNube/robia-qa
+**Sheet de output:** `[CX Ops] Auditorias de Qualidade 2026 - Procesos`, worksheet `[AR] RobIA Procesos`
 
 ---
 
 ## Resumen ejecutivo
 
-RobIA Procesos es el **tercer pilar del IQS** automatizado de calidad CX, complementando a RobIA Soft Skills (subjetivo, GPT-4o) y RobIA Solución Asertiva (binario, en construcción por Robs). Procesos cubre el bloque **Crítico para el Negocio** de la guideline IQS: 4 categorías y 10 procesos auditables.
+RobIA Procesos es el **tercer pilar del IQS** automatizado de calidad CX, complementando a RobIA Soft Skills (subjetivo, GPT-4o) y RobIA Solución Asertiva (binario, en construcción por Robs). Procesos cubre el bloque **Crítico para el Negocio** de la guideline IQS, reordenado por jornada del guru.
 
-Estado actual:
-- **8 sub-reglas implementadas** (de 45 totales identificadas), 64 tests verdes, smoke test contra el lake funcionando.
-- **Discovery completo de las 4 categorías** con definiciones canónicas validadas con Sofía.
-- **Catálogo de R/Cs creado** en el Master Track (`RCs para Procesos`, hoja nueva).
-- **33 sub-reglas pendientes** con fuente identificada (LLM, Zendesk API, GitHub API, Slack, lake).
-- **4 sub-reglas marcadas humanas** (catch-all).
+### Estado actual (al 2026-05-28)
 
-El siguiente paso es la **implementación en 3 fases** post-discovery (definidas con Sofía 2026-05-08):
+**🎯 Hitos completados:**
+- ✅ **Discovery cerrado de los 4 procesos** prioritarios (Derivações, Id Usuario/Org, Duplicates, Estado da Conversa) con tickets ground-truth calibrados por Sofía.
+- ✅ **Fase A — Foundations:** infraestructura completa (output assembler, Sheets writer idempotente, evaluador orquestador, CLI con subcomando `auditoria`).
+- ✅ **Fase B1 — Id Usuario/Org:** 4 sub-reglas implementadas. 100% determinísticas (cero LLM), 100% Zendesk API. Validado contra 22 tickets reales con Sofía.
+- ✅ **Fase B2 — Estado da Conversa (parcial pero alto valor):** 4 sub-reglas activas (3 determinísticas + 1 LLM). Incluye override SD externa (macros dlocal/Andreani) y detección "pending tras respuesta completa" vía GPT-4o.
+- ✅ **Output formato Soft Skills:** 11 columnas A→K idénticas, score 0/1/N/A por proceso, reasoning amigable con emojis.
+- ✅ **CLI ejecutable desde terminal sin tokens Claude:** `python -m robia_procesos.cli auditoria <csv>`.
 
-- **Fase 0** — Adaptar el evaluador al modelo "por guru × proceso" (output compatible con la planilla de auditorías).
-- **Fase A** — Conexiones a fuentes externas en paralelo: Zendesk API, OpenAI, GitHub API, Slack API/MCP, Stats API, lake discovery.
-- **Fase B** — Evaluaciones por categoría en orden: 1° Clasificación → 2° Procesos Zendesk → 3° Issues & Problems → 4° Knowledge Base. Cada categoría como bloque cerrado.
-- **Fase C** — Integración al repo padre `TiendaNube/robia-qa` + calibración continua.
+**⏭️ Pendiente:**
+- Fase B3 — Duplicates (5 sub-reglas)
+- Fase B4 — Derivações (4 sub-reglas)
+- Fase B2 closure — Sub-regla 4.3 (hold sin macro Issue no triaged)
+- Fase C — Integración a `robia-qa` + calibración continua
 
-Plan operativo detallado en el Master Track de Sofía y resumido en la Sección 5 de este doc.
+### Decisión de scope vigente (Sofía + Gabi)
+
+**Frenado explícitamente:**
+- **Clasificación de la conversa** — espera rework del Sheet de Doc&Comm para que quede plano y LLM-ready.
+- **Side Conversations, Issues & Problems, Knowledge Base** — esperan output de RobIA Solución Asertiva (acople vía contrato Asertiva ⇄ Procesos, pendiente cerrar con Robs).
+
+Plan operativo detallado en la Sección 5 de este doc.
 
 ---
 
@@ -248,8 +257,65 @@ Pendiente: Sofía retira la fila "Transportadora incorrecta" (descartada en disc
 ### 2.5 Repo en GitHub
 
 - `https://github.com/SofGrande/robia-process` (privado).
-- 2 commits: estado base + fix side conv.
-- `.gitignore` cubriendo credenciales, caches, dumps, smoke output.
+- 7 commits al 2026-05-28: base, fix side conv, cierre Fase A + B1, refactor output amigable, fix org por audits, B2 parcial, B2 LLM + override SD externa.
+- `.gitignore` cubriendo credenciales, caches, dumps, scripts de exploración local.
+
+### 2.6 Discovery cerrado de los 4 procesos (2026-05-27)
+
+Cada proceso tiene un doc dedicado en la raíz del repo + memoria persistente en `~/.claude/`:
+
+| Proceso | Doc | Sub-reglas | Calibración |
+|---|---|---|---|
+| Derivações | `_discovery_01_derivaciones.md` | 4 | Tickets 7448501 (triagem humano), 7511698 (ADA) |
+| Id Usuario/Org | `_discovery_02_id_usuario_org.md` | 4 | Tickets 6340206 (sin org), 6312826 (WA sin fusión), 7097246 (partner) |
+| Duplicates | `_discovery_03_duplicates.md` | 5 (incluye 1 nueva: priorizar WA) | Tickets 7069887 (público leaked), 7364712/7365485 (sin macro), 6891651/6891653 (no priorizó WA) + positivos 7362139, 7124125 |
+| Estado da Conversa | `_discovery_04_estado_conversa.md` | 4 | Ticket 7239962 (caso Rosario: pending tras respuesta completa + hold sin macro Issue) |
+
+**Hallazgos críticos durante discovery:**
+- ETL del lake atrasa ~24h respecto a Zendesk → RobIA Procesos solo audita tickets con ≥24h de antigüedad.
+- `tickets_events__event` no registra el actor del cambio → cruce con `macros_usage` (por timestamp) y `assignment` (ventanas de AI Agent) para identificar ADA / Triagem / Guru / Trigger.
+- `tickets_events__event` no registra cambios de `organization_id` → necesario Zendesk Audits API.
+- `s__tech__ticket_custom_fields__event` solo trackea 2 fields (`support_feedback`, `type_of_task`) → todo lo demás vía Zendesk API.
+- Texto de merge de Zendesk es BR-PT en todas las geografías (regex única funciona AR/BR/LATAM).
+
+### 2.7 Fase A — Infraestructura del evaluador
+
+- **`core/output.py`** — `FilaOutput` con 11 columnas A→K idénticas a Soft Skills, agregación de score por proceso (N/A si todas N/A, 1 si alguna ERROR, 0 resto), formateo amigable con emojis ✅/❌/⚪.
+- **`core/sheets_writer.py`** — escribe al Sheet con idempotencia por `ticket_id` (re-correr reemplaza filas previas, no duplica).
+- **`core/evaluador.py`** — orquestador, registro de evaluadores por proceso.
+- **`cli.py`** — subcomando `auditoria` que toma CSV (ticket_id, guru) y escribe al Sheet desde terminal sin tokens Claude.
+- **`core/zendesk_api.py`** — clientes para macros, Help Center, tickets, comments, users, audits.
+- **`core/llm.py`** — cliente OpenAI con cache singleton.
+- **`core/slack_feedback.py`** — cliente para los 7 rooms de feedback (no integrado todavía, queda para Fase B futura).
+- **`core/equipo_mapping.py`** — filtro de catálogo por equipo (no integrado, espera rework del Sheet Doc&Comm).
+
+### 2.8 Fase B1 — Id Usuario/Org (cerrado 2026-05-27)
+
+Archivo: `reglas/id_usuario_org.py`. 4 sub-reglas determinísticas:
+
+| Sub-regla | Cómo se detecta | Calibración |
+|---|---|---|
+| `organizacion_asociada` | Si org=None al cierre → ERROR. Si vino con org del trigger automático (`author_id=-1`) → N/A. Si guru la asoció (`author_id` humano) → OK | Validado con 7339348 (trigger), 7348380 (manual guru), 7229840 (sin org) |
+| `fusion_usuario_whatsapp` | Solo aplica si `via.channel=whatsapp`. Si requester sin email + otro user en la org con email → ERROR | Validado |
+| `es_partner_checkbox` | Aplica si `group_id ∈ {AR Partners, AR Partners Pagos, BR Partners, LATAM Partners Pagos}`. Si checkbox vacío → ERROR. **NO** usa "success_equipe" (atiende top/large, no partners — corrección post-feedback Sofía) | Validado con 7097246 (partner real), 7343476 (Success ≠ Partner) |
+| `partner_id_cargado` | Mismo trigger que checkbox. Si Partner ID vacío → ERROR | Validado |
+
+**Corrida sobre 22 tickets semana 22:** 5 errores reales (org=None), 7 N/A (org del trigger), 10 OK.
+
+### 2.9 Fase B2 — Estado da Conversa (parcial, alto valor — 2026-05-28)
+
+Archivo wrapper: `reglas/estado_conversa.py`. Reutiliza código existente en `estado_conversacion.py` + LLM en `estado_pending_llm.py`. 4 sub-reglas activas:
+
+| Sub-regla | Tipo | Cómo se detecta |
+|---|---|---|
+| `cierre_coherente` (4.4) | Determinística | Timeline pasa por `solved` antes de `closed`. Si cierre directo → ERROR |
+| `pending_post_solved_sin_trigger` | Determinística (heurística) | Volvió a pending tras solved sin nuevo mensaje del cliente → ERROR |
+| `hold_sin_side_conversation` (4.2) | Determinística + override | Hold >24h sin SD → ERROR. **Override:** si guru aplicó alguna macro `Medir conversa con dlocal/Andreani` (11 macros mapeadas) → SD externa válida → OK |
+| `pending_mantenido_con_respuesta_completa` (4.1) | **LLM (GPT-4o)** | Última respuesta del guru antes de pending: ¿tiene pregunta de sondeo / action item? Si no → ERROR. Usa definición canónica de Sofía literal en system prompt |
+
+**Pendiente para cerrar B2 al 100%:** Sub-regla 4.3 (hold por Issue/Problem sin macro `Issue no triaged`). Discovery cerrado, código sin escribir todavía.
+
+**Corrida sobre 22 tickets:** 8 errores en Estado da Conversa (vs 2 antes de enchufar el LLM). Mejora significativa de asertividad.
 
 ---
 
@@ -424,49 +490,53 @@ Definido con Sofía el 2026-05-08. La lógica de orden es: **conexiones primero,
 
 | TASK | Tarea | % | HRS | Notas |
 |---|---|---|---|---|
-| RP-01 | Discovery completo de las 4 categorías (45 sub-reglas) | 100 | 30 | Cerrado con definiciones canónicas validadas |
-| RP-02 | Crear hoja `RCs para Procesos` en Master Track Calidad | 100 | 2 | 43 filas iniciales |
-| RP-03 | Doc Google "Estado del Proyecto" | 80 | 4 | Pendiente subir el .md a Google Doc |
-| RP-04 | Adaptar el evaluador para entregar resultados por guru y por proceso | 0 | 10 | Refactor: pasa de "por ticket" a "una fila por guru × proceso", listo para pegar en planilla. Output del CLI compatible con tab `[XX] Manual` |
+| RP-01 | Discovery completo de los 4 procesos prioritarios (jornada del guru) | **100** | 30 | Cerrado 2026-05-27 con tickets ground-truth |
+| RP-02 | Crear hoja `RCs para Procesos` en Master Track Calidad | **100** | 2 | Sofía actualizó con RC positiva / RC negativa / ejemplos |
+| RP-03 | Doc Google "Estado del Proyecto" | **100** | 4 | Doc actualizado 2026-05-28 con todo el avance reciente |
+| RP-04 | Adaptar el evaluador para entregar resultados por guru y por proceso | **60-70** | 10 | Infra completa (output, sheets_writer, evaluador, CLI). 2 de 4 procesos integrados (Id Usuario/Org + Estado da Conversa). Falta integrar Duplicates y Derivações |
 
-### Fase A — Conexiones a fuentes externas (en paralelo)
-
-Las 6 conexiones se trabajan al mismo tiempo, no se bloquean entre sí. Total ~2 semanas.
+### Fase A — Infraestructura externa
 
 | TASK | Tarea | % | HRS | Notas |
 |---|---|---|---|---|
-| RP-A1 | Conectar Zendesk API (macros + Centro de Atención / Zendesk Guide) | 0 | 6 | Necesario para casi todas las categorías |
-| RP-A2 | Conectar OpenAI (configurar el cliente, ya hay key disponible) | 0 | 2 | Necesario para Clasificación, Estado LLM, I&P, KB |
-| RP-A3 | Conseguir token GitHub + conectar a 2 repos (Issues + Problems) | 0 | 4 | Necesario solo para I&P |
-| RP-A4 | Conectar Slack API/MCP a rooms BOT, macros, `#support-documentação-feedback-ar` | 0 | 6 | Necesario solo para 3 sub-reglas de Feedbacks |
-| RP-A5 | Confirmar con DataOps/Infra acceso a Stats API | 0 | 2 | Si no existe, "No asoció organización" queda humana |
-| RP-A6 | Buscar en Databricks tablas faltantes (fusiones, tags, custom fields) | 0 | 4 | Sesión técnica de exploración del lake |
+| RP-A1 | Conectar Zendesk API (macros + Help Center + tickets + comments + users + audits) | **100** | 6 | `core/zendesk_api.py` |
+| RP-A2 | Conectar OpenAI | **100** | 2 | `core/llm.py` |
+| RP-A3 | Conseguir token GitHub + conectar a 2 repos (Issues + Problems) | 0 | 4 | Diferido — necesario solo para B3 I&P (frenado por contrato Asertiva) |
+| RP-A4 | Conectar Slack API/MCP | 50 | 6 | Cliente `core/slack_feedback.py` codeado, no integrado todavía. Pendiente solo para 3 sub-reglas KB Feedbacks |
+| RP-A5 | Confirmar con DataOps/Infra acceso a Stats API | 0 | 2 | Diferido — descubrimos en discovery que las 3 sub-reglas Id Usuario/Org se resuelven solo con Zendesk API, sin Stats API |
+| RP-A6 | Discovery del lake | **100** | 4 | Mapeamos qué hay y qué no. Hallazgos clave: cambios de org via Audits API, custom_fields no trackeados, ETL atrasa 24h |
 
-### Fase B — Evaluaciones por categoría (en orden)
+### Fase B — Evaluadores por proceso (jornada del guru)
 
-Cada categoría es un bloque cerrado. Se completa antes de pasar a la siguiente.
+Reordenado según el plan de Sofía (2026-05-27): primero los 4 procesos no bloqueados.
 
 | TASK | Tarea | % | HRS | Notas |
 |---|---|---|---|---|
-| RP-B1 | **1° Clasificación** — Tópico/Subtópico + Naturaleza (10 sub-reglas) | 0 | 18 | 5 ya implementadas + 5 nuevas con IA. Usa OpenAI + Sheet maestro Tópicos + mapping `group_id → equipo` |
-| RP-B2 | **2° Procesos Zendesk** — Estado + Duplicates + Id + Derivações + Side Conversation (21 sub-reglas) | 0 | 50 | 3 ya implementadas + 18 nuevas. Usa Zendesk API + lake (merges, tags, custom fields) + OpenAI. Bloque más grande |
-| RP-B3 | **3° Issues & Problems** — bug nuevo, +1 existente, vinculación sin necesidad (6 sub-reglas) | 0 | 16 | Usa GitHub API + lake + OpenAI |
-| RP-B4 | **4° Knowledge Base** — Aplicação (macros, tutoriales, Zendesk Guide) + Feedbacks (4 vías) (8 sub-reglas) | 0 | 28 | Usa Zendesk API + Slack + OpenAI. Feedback stakeholders es lake puro |
+| RP-B1 | **Id Usuario/Org** (4 sub-reglas) | **100** | 8 | Cerrado 2026-05-27. 100% determinístico, sin LLM. Validado en producción contra 22 tickets. Corrección post-feedback: partner por `group_id`, no por `success_equipe` |
+| RP-B2 | **Estado da Conversa** (4 sub-reglas activas, 1 pendiente) | **75** | 12 | 3 sub-reglas determinísticas + 1 LLM (4.1 pending). Override SD externa (11 macros dlocal/Andreani) post-feedback Sofía. **Falta:** 4.3 hold sin macro Issue no triaged |
+| RP-B3 | **Duplicates** (5 sub-reglas) | 0 | 16 | Discovery cerrado. Detección base por regex BR-PT lista para implementar. 4 determinísticas + 1 LLM (3.1 similitud) |
+| RP-B4 | **Derivações** (4 sub-reglas) | 0 | 18 | Discovery cerrado. Patrón actor validado (ADA/Triagem/Guru/Trigger). 1 determinística + 3 LLM ("equipo destino correcto?") |
+| RP-B5 | **Clasificación de la conversa** | — | — | **Frenado** hasta rework de Sheet Doc&Comm |
+| RP-B6 | **Side Conversation + Issues & Problems + Knowledge Base** | — | — | **Frenado** hasta acople con RobIA Solución Asertiva |
 
 ### Fase C — Integración y calibración
 
 | TASK | Tarea | % | HRS | Notas |
 |---|---|---|---|---|
 | RP-C1 | Integrar RobIA Procesos al repo `TiendaNube/robia-qa` como módulo nativo | 0 | 8 | Output unificado en Google Sheets junto con Soft Skills y Solución Asertiva |
-| RP-C2 | Calibración continua con muestras semanales y ajuste de prompts | 0 | 2/sem | Refinamiento permanente con casos reales |
+| RP-C2 | Calibración continua con muestras semanales y ajuste de prompts | En curso | 2/sem | Cada batch corrida sobre tickets reales alimenta refinamiento. Sofía valida y propone ajustes (ej. caso 7343476 partner false positive → fix por group_id) |
 
-### Resumen del cronograma
+### Resumen del cronograma (actualizado 2026-05-28)
 
-- **Fase 0** ~ 1 semana de trabajo activo (RP-04; el resto ya está hecho).
-- **Fase A** ~ 2 semanas (en paralelo).
-- **Fase B** ~ 8-10 semanas (en serie por categoría).
-- **Fase C** ~ 1 semana de PR + calibración continua.
-- **Total estimado: ~12-14 semanas** desde el inicio del Sprint 0 hasta PR mergeado, sin contar calibración continua.
+**Status acumulado:**
+- Fase 0: 90% (solo falta cerrar RP-04 al 100% integrando B3+B4)
+- Fase A: 95% (lo bloqueado es lo no aplicable hoy)
+- Fase B: ~30% (B1 100% + B2 75% + B3/B4 pendientes)
+- Fase C: 0% (recién después de B completo)
+
+**Avance medible:** 11 sub-reglas activas en producción (de 17 prioritarias × 4 procesos = 17 totales). 22 tickets evaluados semana 22 con 2 procesos cada uno = 44 filas en el Sheet.
+
+**Tiempo invertido por Sofía + Claude (estimado):** ~40 horas distribuidas en mayo 2026 entre discovery, foundations, B1, B2 parcial y calibración iterativa.
 
 ### Dependencias externas críticas (a resaltar en el Master Track)
 

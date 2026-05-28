@@ -173,7 +173,15 @@ def _evaluadores_disponibles() -> dict:
         out["id_usuario_org"] = (CRIT_ID, evaluar_id_usuario_org)
     except ImportError:
         pass
-    # B2 — Estado da Conversa (pendiente)
+    # B2 (parcial) — Estado da Conversa (3 de 4 sub-reglas, sin LLM)
+    try:
+        from robia_procesos.reglas.estado_conversa import (
+            CRITERIO as CRIT_EC,
+            evaluar_estado_conversa,
+        )
+        out["estado_conversa"] = (CRIT_EC, evaluar_estado_conversa)
+    except ImportError:
+        pass
     # B3 — Duplicates (pendiente)
     # B4 — Derivações (pendiente)
     return out

@@ -150,9 +150,14 @@ def cmd_auditoria(args: argparse.Namespace) -> int:
             print(f"  {f.ticket_id} | {f.criterio} | score={f.score}")
         return 0
 
-    from robia_procesos.core.sheets_writer import escribir_filas
-    print(f"\nEscribiendo {len(filas)} filas al Sheet...", file=sys.stderr)
-    resultado = escribir_filas(filas, reemplazar_existentes=not args.no_reemplazar)
+    from robia_procesos.core.sheets_writer import escribir_filas, worksheet_para_pais
+    ws_name = worksheet_para_pais(args.pais)
+    print(f"\nEscribiendo {len(filas)} filas al worksheet {ws_name!r}...", file=sys.stderr)
+    resultado = escribir_filas(
+        filas,
+        reemplazar_existentes=not args.no_reemplazar,
+        worksheet_name=ws_name,
+    )
     print(f"  → {resultado}", file=sys.stderr)
     return 0
 

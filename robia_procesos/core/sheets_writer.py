@@ -23,19 +23,35 @@ from google.oauth2.service_account import Credentials
 from robia_procesos.core.output import FilaOutput
 
 SHEET_ID = "1UaJCklivyvrfOlD9OvQ7RkoyGHkR0VWj1rdbtoPj9BU"
-WORKSHEET_NAME = "[AR] RobIA Procesos"
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
+
+# Mapping país → worksheet en el mismo Sheet.
+WORKSHEETS_POR_PAIS: dict[str, str] = {
+    "AR": "[AR] RobIA Procesos",
+    "BR": "[BR] RobIA Procesos",
+    "LT": "[LT] RobIA Procesos",
+}
 
 _ROOT = Path(__file__).resolve().parents[2]
 CREDS_PATH = _ROOT / "Credenciales" / "service_account_robia.json"
 
 
-@lru_cache(maxsize=1)
-def _worksheet() -> gspread.Worksheet:
-    """Abre el worksheet — cacheado para no re-autenticar entre llamadas."""
+@lru_cache(maxsize=4)
+def _worksheet(nombre: str) -> gspread.Worksheet:
+    """Abre el worksheet por nombre — cacheado para no re-autenticar."""
     creds = Credentials.from_service_account_file(str(CREDS_PATH), scopes=SCOPES)
     sh = gspread.authorize(creds).open_by_key(SHEET_ID)
-    return sh.worksheet(WORKSHEET_NAME)
+    return sh.worksheet(nombre)
+
+
+def worksheet_para_pais(pais: str) -> str:
+    """AR → '[AR] RobIA Procesos', etc. Falla claro si no está mapeado."""
+    try:
+        return WORKSHEETS_POR_PAIS[pais.upper()]
+    except KeyError:
+        raise ValueError(
+            f"País desconocido: {pais!r}. Soportados: {list(WORKSHEETS_POR_PAIS)}"
+        )
 
 
 def _tickets_existentes(ws: gspread.Worksheet) -> dict[int, list[int]]:
@@ -60,18 +76,20 @@ def _tickets_existentes(ws: gspread.Worksheet) -> dict[int, list[int]]:
 def escribir_filas(
     filas: list[FilaOutput],
     reemplazar_existentes: bool = True,
+    worksheet_name: str = "[AR] RobIA Procesos",
 ) -> dict[str, int]:
-    """Escribe filas al Sheet, una por una.
+    """Escribe filas al worksheet indicado.
 
     Args:
         filas: lista de FilaOutput. Pueden ser de varios tickets.
         reemplazar_existentes: si True, borra filas previas de los mismos
             ticket_ids antes de escribir las nuevas. Si False, agrega al final.
+        worksheet_name: nombre del worksheet destino. Default AR.
 
     Returns:
         {"escritas": N, "eliminadas_previas": M}
     """
-    ws = _worksheet()
+    ws = _worksheet(worksheet_name)
     if not filas:
         return {"escritas": 0, "eliminadas_previas": 0}
 

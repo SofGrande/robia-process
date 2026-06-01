@@ -89,6 +89,69 @@ def _es_ticket_de_partner(ticket: dict, comments: list[dict]) -> tuple[bool, str
 AUTHOR_SYSTEM = -1  # author_id usado por Zendesk para triggers/automatizaciones
 
 
+def _evaluar_organizacion_con_audits(ticket_id: int) -> CriterioEvaluado:
+    """Sub-función llamada cuando ticket.organization_id YA está poblado.
+
+    Distingue el origen de la asociación para que el reasoning natural pueda
+    decir "el guru asoció" vs "vino del trigger automático" vs "ya estaba al
+    crear el ticket". Todos los casos son THUMBS_UP (score binario 0); solo
+    cambia el texto que ve la auditora.
+    """
+    try:
+        audits = zd.get_ticket_audits(ticket_id)
+    except Exception:
+        # Sin audits, no podemos discriminar — devolvemos texto genérico.
+        return CriterioEvaluado(
+            ticket_id=ticket_id,
+            criterio=CRITERIO,
+            sub_regla="organizacion_asociada",
+            resultado=Resultado.THUMBS_UP,
+            regla="Organización: Asociada al ticket con éxito.",
+            confianza=Confianza.PARCIAL,
+        )
+
+    # Buscar el primer evento que setea organization_id de None a un valor.
+    primer_asociacion: dict | None = None
+    for audit in audits:
+        for ev in audit.get("events", []):
+            if ev.get("field_name") != "organization_id":
+                continue
+            if ev.get("previous_value") is None and ev.get("value") is not None:
+                primer_asociacion = {"author_id": audit.get("author_id")}
+                break
+        if primer_asociacion:
+            break
+
+    if primer_asociacion is None:
+        return CriterioEvaluado(
+            ticket_id=ticket_id,
+            criterio=CRITERIO,
+            sub_regla="organizacion_asociada",
+            resultado=Resultado.THUMBS_UP,
+            regla="Organización: El ticket ya tenía la organización asociada desde la creación; no requirió acción del guru.",
+            confianza=Confianza.DIRECTA,
+        )
+
+    if primer_asociacion["author_id"] == AUTHOR_SYSTEM:
+        return CriterioEvaluado(
+            ticket_id=ticket_id,
+            criterio=CRITERIO,
+            sub_regla="organizacion_asociada",
+            resultado=Resultado.THUMBS_UP,
+            regla="Organización: Se asoció automáticamente por una regla de Zendesk; no requirió acción manual del guru.",
+            confianza=Confianza.DIRECTA,
+        )
+
+    return CriterioEvaluado(
+        ticket_id=ticket_id,
+        criterio=CRITERIO,
+        sub_regla="organizacion_asociada",
+        resultado=Resultado.THUMBS_UP,
+        regla="Organización: El guru identificó al cliente y asoció la organización manualmente.",
+        confianza=Confianza.DIRECTA,
+    )
+
+
 def _evaluar_organizacion(ticket_id: int, ticket: dict) -> CriterioEvaluado:
     """Evalúa si la organización del cliente está asociada (al ticket o al user).
 
@@ -108,16 +171,9 @@ def _evaluar_organizacion(ticket_id: int, ticket: dict) -> CriterioEvaluado:
     """
     org_ticket = ticket.get("organization_id")
 
-    # Caso 1: ticket tiene org → OK directo.
+    # Caso 1: ticket tiene org → OK + distinguir SI fue el guru o vino sola.
     if org_ticket:
-        return CriterioEvaluado(
-            ticket_id=ticket_id,
-            criterio=CRITERIO,
-            sub_regla="organizacion_asociada",
-            resultado=Resultado.THUMBS_UP,
-            regla="Organización: Asociada al ticket con éxito.",
-            confianza=Confianza.DIRECTA,
-        )
+        return _evaluar_organizacion_con_audits(ticket_id)
 
     # Caso 2: ticket sin org pero user con org → también OK.
     requester_id = ticket.get("requester_id")

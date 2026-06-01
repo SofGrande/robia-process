@@ -87,9 +87,9 @@ def cmd_auditoria(args: argparse.Namespace) -> int:
         FilaOutput,
         _agregar_score,
         _formatear_rcs,
-        _formatear_reasoning,
         semana_iso,
     )
+    from robia_procesos.core.reasoning import sintetizar as sintetizar_reasoning
 
     # Cargar lista
     csv_path = Path(args.csv).resolve()
@@ -136,7 +136,7 @@ def cmd_auditoria(args: argparse.Namespace) -> int:
                 guru=guru,
                 criterio=criterio_label,
                 score=_agregar_score(criterios),
-                reasoning=_formatear_reasoning(criterios),
+                reasoning=sintetizar_reasoning(criterios, criterio_label, args.pais),
                 rcs=_formatear_rcs(criterios),
                 aplicacion=_agregar_aplicacion(criterios),
             )

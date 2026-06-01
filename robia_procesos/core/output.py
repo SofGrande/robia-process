@@ -28,49 +28,77 @@ PROCESOS_ORDEN: tuple[str, ...] = (
 
 @dataclass(frozen=True)
 class FilaOutput:
-    """Una fila del Sheet — 11 columnas A→K.
+    """Una fila del Sheet — 11 cols A→K + 1 col extra `Aplicación` al final.
 
-    Columnas L→T son completadas por la auditora manualmente; las dejamos
-    como strings vacíos al escribir para no pisar fórmulas existentes.
+    Schema actualizado 2026-06-01: score binario 0/1 (sin N/A) + columna
+    nueva `Aplicación` con valores "Aplicable" / "No aplicable".
+
+    Posición de `Aplicación`: al **final** del row, después de las columnas
+    manuales L-T del Sheet (que la auditora completa a mano). De esa manera
+    no rompemos sus fórmulas existentes en L-T.
     """
     semana: int                  # col A
     pais: str                    # col B (AR/BR/LT)
     ticket_id: int               # col C
     guru: str                    # col D
     criterio: str                # col E
-    score: str                   # col F  ("0" / "1" / "N/A")
+    score: str                   # col F  ("0" / "1" — binario)
     score_calibrado: str = ""    # col G (manual)
     reasoning: str = ""          # col H
     rcs: str = ""                # col I
     calibracao_qa: str = ""      # col J (manual)
     notas: str = ""              # col K (manual)
+    aplicacion: str = ""         # col V  ("Aplicable" / "No aplicable")
+
+    # Cantidad de columnas vacías entre col K (Notas) y col V (Aplicación).
+    # Las cols L-U (Equipe, Puntaje, Cantidad de errores, Errores graves,
+    # Errores medios, Tipo de Guru, Mês, Amostra, Data Fic) son manuales,
+    # acá las dejamos vacías para no pisar lo que la auditora cargue.
+    _GAP_COLUMNAS_MANUALES = 10  # cols L, M, N, O, P, Q, R, S, T, U
 
     def to_row(self) -> list[str]:
-        """Serializa a lista de 11 strings — orden A→K."""
+        """Serializa a lista de 22 strings — orden A→V."""
         return [
-            str(self.semana),
-            self.pais,
-            str(self.ticket_id),
-            self.guru,
-            self.criterio,
-            self.score,
-            self.score_calibrado,
-            self.reasoning,
-            self.rcs,
-            self.calibracao_qa,
-            self.notas,
+            str(self.semana),         # A
+            self.pais,                # B
+            str(self.ticket_id),      # C
+            self.guru,                # D
+            self.criterio,            # E
+            self.score,               # F
+            self.score_calibrado,     # G
+            self.reasoning,           # H
+            self.rcs,                 # I
+            self.calibracao_qa,       # J
+            self.notas,               # K
+            *[""] * self._GAP_COLUMNAS_MANUALES,  # L-U (manuales, vacías)
+            self.aplicacion,          # V
         ]
 
 
 def _agregar_score(criterios: list[CriterioEvaluado]) -> str:
-    """Aplica las 3 reglas de agregación."""
+    """Score binario: 1 si hay error, 0 en cualquier otro caso.
+
+    Reglas:
+      - TODAS NO_EVALUABLE  → 0 (no aplicable)
+      - ALGUNA THUMBS_DOWN  → 1 (error)
+      - resto               → 0 (todo OK)
+    """
     if not criterios:
-        return "N/A"
+        return "0"
     if all(c.resultado == Resultado.NO_EVALUABLE for c in criterios):
-        return "N/A"
+        return "0"
     if any(c.resultado == Resultado.THUMBS_DOWN for c in criterios):
         return "1"
     return "0"
+
+
+def _agregar_aplicacion(criterios: list[CriterioEvaluado]) -> str:
+    """Devuelve 'No aplicable' si TODAS las sub-reglas son NO_EVALUABLE, sino 'Aplicable'."""
+    if not criterios:
+        return "No aplicable"
+    if all(c.resultado == Resultado.NO_EVALUABLE for c in criterios):
+        return "No aplicable"
+    return "Aplicable"
 
 
 def _formatear_reasoning(criterios: list[CriterioEvaluado]) -> str:
@@ -157,6 +185,7 @@ def ensamblar_filas_ticket(
                 score=_agregar_score(subs),
                 reasoning=_formatear_reasoning(subs),
                 rcs=_formatear_rcs(subs),
+                aplicacion=_agregar_aplicacion(subs),
             )
         )
     return filas

@@ -29,6 +29,7 @@ CRITERIO = "Estado da Conversa"
 # (no dentro de Zendesk SD). Si alguna de éstas fue aplicada, un hold de
 # >24h sin SD Zendesk sigue siendo válido. Confirmadas por Sofía 2026-05-28.
 MACROS_SD_EXTERNA: dict[int, str] = {
+    # AR — dlocal + Andreani
     36455482333460: "Medir conversa con dlocal - Contracargo",
     36455358251028: "Medir conversa con dlocal - Retiros",
     42171957879188: "Medir conversa con dlocal - Facturas",
@@ -40,6 +41,8 @@ MACROS_SD_EXTERNA: dict[int, str] = {
     36509421102228: "Medir conversa con dlocal - Devolución de fees",
     36455456544020: "Medir conversa con dlocal - Saldos y Balances",
     35226808480020: "Medir conversa con Portal Andreani/HOP",
+    # LATAM — agregado 2026-06-01 calibración LT (caso 7349714 Alexis V.)
+    30725644093716: "[MX] Consulta para POCs en Slack",
 }
 
 TABLA_MACROS = "s__general__zendesk_macros_usage__event"

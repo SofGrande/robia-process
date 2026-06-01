@@ -128,6 +128,7 @@ def cmd_auditoria(args: argparse.Namespace) -> int:
                 continue
             if not criterios:
                 continue
+            from robia_procesos.core.output import _agregar_aplicacion
             fila = FilaOutput(
                 semana=semana,
                 pais=args.pais,
@@ -137,6 +138,7 @@ def cmd_auditoria(args: argparse.Namespace) -> int:
                 score=_agregar_score(criterios),
                 reasoning=_formatear_reasoning(criterios),
                 rcs=_formatear_rcs(criterios),
+                aplicacion=_agregar_aplicacion(criterios),
             )
             filas.append(fila)
         # cierre línea de progreso

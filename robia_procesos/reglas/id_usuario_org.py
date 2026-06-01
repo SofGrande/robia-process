@@ -90,87 +90,60 @@ AUTHOR_SYSTEM = -1  # author_id usado por Zendesk para triggers/automatizaciones
 
 
 def _evaluar_organizacion(ticket_id: int, ticket: dict) -> CriterioEvaluado:
-    """Evalúa si el guru asoció la organización cuando hacía falta.
+    """Evalúa si la organización del cliente está asociada (al ticket o al user).
 
-    Regla refinada (Sofía 2026-05-27): el criterio mide la **acción del guru**,
-    no el estado final. Tres escenarios:
+    Regla refinada con Sofía (2026-06-01): el "historial de conversación" se
+    actualiza cuando el CLIENTE (user) tiene organización, no necesariamente
+    cuando el ticket la tiene seteada. Por eso chequeamos ambos lugares:
 
-    1. Org ya estaba al crear el ticket / se asoció por trigger automático
-       (sin author humano): **N/A** — el guru no tuvo que hacer nada.
-    2. Org era None al inicio y un guru la asoció manualmente: **THUMBS_UP**.
-    3. Ticket cerró sin organización asociada: **THUMBS_DOWN**.
+    1. ticket.organization_id está poblado → THUMBS_UP (directo).
+    2. ticket.organization_id es None PERO user.organization_id está poblado
+       → THUMBS_UP (la org está asociada al cliente, el historial se actualiza).
+    3. Ambos None → THUMBS_DOWN (cliente sin org, nadie hizo el trabajo).
+
+    Si la org del ticket fue seteada por trigger automático (audit con
+    author_id=-1) y no por guru, sigue siendo válido — el historial se
+    actualiza igual. Por eso ya no diferenciamos N/A vs THUMBS_UP en ese caso
+    (el nuevo schema binarizo igual ambos a score=0).
     """
-    org_id_final = ticket.get("organization_id")
+    org_ticket = ticket.get("organization_id")
 
-    # Caso 3: cerró sin org
-    if not org_id_final:
+    # Caso 1: ticket tiene org → OK directo.
+    if org_ticket:
         return CriterioEvaluado(
             ticket_id=ticket_id,
             criterio=CRITERIO,
             sub_regla="organizacion_asociada",
-            resultado=Resultado.THUMBS_DOWN,
-            regla="Organización: No se asoció ninguna al ticket. Todo ticket debe tener una organización asociada.",
+            resultado=Resultado.THUMBS_UP,
+            regla="Organización: Asociada al ticket con éxito.",
             confianza=Confianza.DIRECTA,
         )
 
-    # Tiene org al final — distinguir si fue acción del guru o vino sola.
-    try:
-        audits = zd.get_ticket_audits(ticket_id)
-    except Exception:
-        # Si falla audits, somos conservadores: marcamos N/A para no inventar.
-        return CriterioEvaluado(
-            ticket_id=ticket_id,
-            criterio=CRITERIO,
-            sub_regla="organizacion_asociada",
-            resultado=Resultado.NO_EVALUABLE,
-            regla="Organización: No se pudo verificar el historial de cambios del ticket.",
-            confianza=Confianza.HEURISTICA,
-        )
+    # Caso 2: ticket sin org pero user con org → también OK.
+    requester_id = ticket.get("requester_id")
+    if requester_id:
+        try:
+            user = zd.get_user(requester_id)
+            org_user = user.get("organization_id")
+            if org_user:
+                return CriterioEvaluado(
+                    ticket_id=ticket_id,
+                    criterio=CRITERIO,
+                    sub_regla="organizacion_asociada",
+                    resultado=Resultado.THUMBS_UP,
+                    regla="Organización: El cliente tiene organización asociada; el historial de conversación se actualiza correctamente.",
+                    confianza=Confianza.DIRECTA,
+                )
+        except Exception:
+            pass  # si falla la query del user, caemos al caso 3
 
-    # Buscar el primer evento que setea organization_id de None a un valor.
-    primer_asociacion: dict | None = None
-    for audit in audits:
-        for ev in audit.get("events", []):
-            if ev.get("field_name") != "organization_id":
-                continue
-            if ev.get("previous_value") is None and ev.get("value") is not None:
-                primer_asociacion = {
-                    "author_id": audit.get("author_id"),
-                    "audit_id": audit.get("id"),
-                }
-                break
-        if primer_asociacion:
-            break
-
-    if primer_asociacion is None:
-        # Org está pero nunca apareció un evento de cambio → vino al crear.
-        return CriterioEvaluado(
-            ticket_id=ticket_id,
-            criterio=CRITERIO,
-            sub_regla="organizacion_asociada",
-            resultado=Resultado.NO_EVALUABLE,
-            regla="Organización: El ticket se creó con organización asociada, no requirió acción del guru.",
-            confianza=Confianza.DIRECTA,
-        )
-
-    if primer_asociacion["author_id"] == AUTHOR_SYSTEM:
-        # Trigger / automatización Zendesk — no fue acción del guru.
-        return CriterioEvaluado(
-            ticket_id=ticket_id,
-            criterio=CRITERIO,
-            sub_regla="organizacion_asociada",
-            resultado=Resultado.NO_EVALUABLE,
-            regla="Organización: Se asoció automáticamente por una regla de Zendesk, no requirió acción del guru.",
-            confianza=Confianza.DIRECTA,
-        )
-
-    # Humano asoció la organización manualmente.
+    # Caso 3: ni ticket ni user tienen org.
     return CriterioEvaluado(
         ticket_id=ticket_id,
         criterio=CRITERIO,
         sub_regla="organizacion_asociada",
-        resultado=Resultado.THUMBS_UP,
-        regla="Organización: El guru identificó al cliente y asoció la organización manualmente.",
+        resultado=Resultado.THUMBS_DOWN,
+        regla="Organización: Ni el ticket ni el cliente tienen organización asociada.",
         confianza=Confianza.DIRECTA,
     )
 

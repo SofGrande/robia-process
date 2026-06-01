@@ -198,7 +198,15 @@ def _evaluadores_disponibles() -> dict:
         out["derivacoes"] = (CRIT_DER, evaluar_derivacoes)
     except ImportError:
         pass
-    # B3 — Duplicates (pendiente)
+    # B3 — Duplicates (4 sub-reglas determinísticas)
+    try:
+        from robia_procesos.reglas.duplicates import (
+            CRITERIO as CRIT_DUP,
+            evaluar_duplicates,
+        )
+        out["duplicates"] = (CRIT_DUP, evaluar_duplicates)
+    except ImportError:
+        pass
     # B4 — Derivações (pendiente)
     return out
 

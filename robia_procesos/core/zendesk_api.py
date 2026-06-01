@@ -265,6 +265,23 @@ def get_ticket_custom_field(ticket_id: int, field_id: int) -> str | None:
     return None
 
 
+@lru_cache(maxsize=256)
+def get_group(group_id: int) -> dict:
+    """Devuelve el grupo (equipo) por ID. Cacheado in-memory para no repetir."""
+    data = _request("GET", f"/api/v2/groups/{group_id}.json")
+    return data.get("group", {})
+
+
+@lru_cache(maxsize=256)
+def get_group_name(group_id: int) -> str:
+    """Devuelve el nombre legible del grupo, o 'grupo N' si falla."""
+    try:
+        g = get_group(group_id)
+        return g.get("name") or f"grupo {group_id}"
+    except Exception:
+        return f"grupo {group_id}"
+
+
 def get_ticket_audits(ticket_id: int) -> list[dict]:
     """Devuelve la lista completa de audits del ticket (con paginación).
 

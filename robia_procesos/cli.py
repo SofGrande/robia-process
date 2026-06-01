@@ -189,6 +189,15 @@ def _evaluadores_disponibles() -> dict:
         out["estado_conversa"] = (CRIT_EC, evaluar_estado_conversa)
     except ImportError:
         pass
+    # B4.1 — Derivações (determinístico, sin LLM)
+    try:
+        from robia_procesos.reglas.derivacoes import (
+            CRITERIO as CRIT_DER,
+            evaluar_derivacoes,
+        )
+        out["derivacoes"] = (CRIT_DER, evaluar_derivacoes)
+    except ImportError:
+        pass
     # B3 — Duplicates (pendiente)
     # B4 — Derivações (pendiente)
     return out

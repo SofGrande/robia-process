@@ -349,18 +349,37 @@ def _sub_hubo_derivacion(ticket_id: int, historial: list[dict]) -> CriterioEvalu
 _SYSTEM_LLM_EQUIPO = """\
 Sos un auditor de calidad CX en Tiendanube/Nuvemshop, plataforma de e-commerce para pequeños lojistas.
 
-Tu tarea: dado el contenido de un ticket de soporte y el equipo al que fue derivado, decidir si el equipo es **apropiado** para resolver el caso o si el ticket debió ir a otro equipo.
+Tu tarea: dado el **recorrido completo** del ticket por equipos y su contenido, decidir si la cadena de derivaciones fue eficiente y si el equipo destino FINAL es apropiado. Detectar también pasos intermedios innecesarios.
 
-Cómo razonar:
-- El **nombre del equipo** suele indicar su especialidad: Pago Nube / PN → temas de pagos, contracargos, cuotas, payouts, KYC, validación de identidad, onboarding, riesgo; Online → tienda online, dominios, diseño, productos, configuración; Envío Nube → logística, etiquetas, transportadoras, devoluciones; Partners / Success → atención a partners (agencias, desarrolladores); Triagem / To Assign → ruteo inicial (NUNCA es destino final correcto); Riesgo y activación SMBs → onboarding de cuentas Pago Nube, KYC, compliance, validación de identidad.
-- Si el contenido del ticket habla CLARAMENTE de un dominio incompatible con el equipo (ej. dudas de envíos en un equipo de Pagos), marcalo INCORRECTO con evidencia explícita.
-- **REGLA FUERTE: si el contenido del ticket es vago, genérico, está incompleto o no podés determinar el tema con claridad, devolvé correcto=true.** No alucines un sugerido; el equipo asignado es válido por default.
-- Si el equipo destino es Triagem o To Assign, marcá correcto=false (Triagem no es destino final).
+### Especialidades por equipo
 
-Devolvé SIEMPRE un JSON estricto con esta forma:
-{"correcto": true | false, "razon": "máx 30 palabras", "equipo_sugerido": "<nombre o null>"}
+- **Pago Nube / PN / Riesgo y activación SMBs**: pagos, contracargos, cuotas, payouts, KYC, validación de identidad, onboarding Pago Nube, compliance.
+- **Envío Nube / Envíos / Nuvem Envio / NE**: logística, etiquetas, transportadoras, retiros, devoluciones, post-venta logística.
+- **Online**: tienda online, dominios, diseño, productos, configuración del admin (no relacionado con pagos ni envíos).
+- **Bido / Cuentas**: temas de cuenta de merchant (contraseñas, accesos, configuración de cuenta).
+- **Partners, Partners Pagos, Success**: **REGLA ESPECIAL** — atienden a partners (agencias, desarrolladores, top sellers). Resuelven TODOS los tópicos EXCEPTO Pago Nube y Envío Nube. Si el equipo es Partners/Partners Pagos/Success y el contenido del ticket NO es claramente PN ni EN → correcto=true SIEMPRE, sin importar el tema.
+- **Triagem / To Assign**: ruteo inicial. NUNCA es destino final correcto — debe haber siempre una derivación posterior a un equipo final.
 
-Sin texto extra fuera del JSON. Sin markdown."""
+### Cómo evaluar el recorrido
+
+Vas a recibir una lista numerada de pasos del recorrido. Por cada paso, ves quién derivó y a qué equipo.
+
+1. **Equipo destino final** (último paso): ¿es apropiado para el contenido del ticket? Si NO → correcto=false, paso_incorrecto = índice del último paso.
+2. **Pasos intermedios**: ¿alguno fue un destino "muerto" donde el equipo no podía resolver y tuvo que re-derivar? Ejemplo: ADA → Bido → PN (donde Bido no podía resolver porque era tema de PN; Bido fue un paso innecesario). Si detectás un paso intermedio innecesario → correcto=false, paso_incorrecto = índice del paso intermedio incorrecto.
+3. Si el recorrido es eficiente (todos los pasos apuntan al destino correcto, o son rutinarios como ADA→Triagem→final) → correcto=true.
+
+### Reglas fuertes (orden de prioridad)
+
+- **DEFAULT A correcto=true** si el contenido del ticket es vago, genérico o no podés determinar el tema. No alucines errores.
+- Si el equipo destino FINAL es Triagem/To Assign → correcto=false (no es destino válido final).
+- Si el equipo es Partners/Partners Pagos/Success y el tema NO es PN ni EN → correcto=true (regla especial arriba).
+
+### Formato de salida
+
+Devolvé SIEMPRE un JSON estricto:
+{"correcto": true | false, "paso_incorrecto": <int 1-based del paso erróneo> | null, "razon": "máx 30 palabras", "equipo_sugerido": "<nombre o null>"}
+
+Sin texto extra. Sin markdown. El paso_incorrecto solo aplica si correcto=false."""
 
 
 def _limpiar_html(s: str | None) -> str:
@@ -423,21 +442,56 @@ def _resumen_ticket_para_llm(ticket: dict, comments: list[dict]) -> str:
     return "\n".join(partes)
 
 
+def _resumen_chain_para_llm(historial: list[dict]) -> str:
+    """Texto de la cadena de derivaciones, numerada 1-based para el LLM."""
+    if not historial:
+        return "Sin derivaciones registradas."
+    lines = []
+    for i, h in enumerate(historial, start=1):
+        # Resolver nombre del grupo via Zendesk si el label es genérico
+        label = h["grupo_destino_label"]
+        if label.startswith("grupo ") and h["grupo_destino"]:
+            try:
+                label = zd.get_group_name(h["grupo_destino"])
+            except Exception:
+                pass
+        lines.append(f"  Paso {i}: {h['actor']} derivó a {label}")
+    return "Recorrido del ticket por equipos:\n" + "\n".join(lines)
+
+
 def _evaluar_equipo_correcto(
     ticket_id: int,
-    grupo_destino_id: int,
+    historial: list[dict],
 ) -> dict | None:
-    """Pide al LLM si el equipo destino es apropiado. Devuelve dict o None si falla."""
+    """Pide al LLM si la cadena de derivaciones fue correcta.
+
+    Pasa la cadena completa (no solo el destino final) para detectar también
+    pasos intermedios innecesarios (ej. ADA→Bido→PN donde Bido era un paso
+    muerto).
+
+    Devuelve dict o None si falla.
+    """
+    if not historial:
+        return None
+
     try:
         ticket = zd.get_ticket(ticket_id)
         comments = zd.get_ticket_comments(ticket_id, per_page=10, sort_order="asc")
-        equipo_nombre = zd.get_group_name(grupo_destino_id)
     except Exception:
         return None
 
+    grupo_final_id = historial[-1]["grupo_destino"]
+    equipo_final_nombre = (
+        zd.get_group_name(grupo_final_id)
+        if grupo_final_id
+        else "(desconocido)"
+    )
+
     contenido = _resumen_ticket_para_llm(ticket, comments)
+    chain_text = _resumen_chain_para_llm(historial)
+
     user = (
-        f"Equipo destino: {equipo_nombre} (id={grupo_destino_id})\n\n"
+        f"{chain_text}\n\n"
         f"Ticket:\n{contenido}\n\n"
         "Devolvé el JSON con tu evaluación:"
     )
@@ -446,15 +500,23 @@ def _evaluar_equipo_correcto(
             user=user,
             system=_SYSTEM_LLM_EQUIPO,
             temperature=0,
-            max_tokens=200,
+            max_tokens=250,
             response_format={"type": "json_object"},
         )
         parsed = json.loads(respuesta)
+        paso = parsed.get("paso_incorrecto")
+        # Normalizar paso (puede venir 1-based o como string)
+        if paso is not None:
+            try:
+                paso = int(paso)
+            except (ValueError, TypeError):
+                paso = None
         return {
             "correcto": bool(parsed.get("correcto", True)),
+            "paso_incorrecto": paso,
             "razon": (parsed.get("razon") or "").strip(),
             "equipo_sugerido": (parsed.get("equipo_sugerido") or None),
-            "equipo_destino_nombre": equipo_nombre,
+            "equipo_final_nombre": equipo_final_nombre,
         }
     except Exception:
         return None
@@ -468,34 +530,46 @@ def _aplicar_veredicto_llm(
     historial: list[dict],
     veredicto: dict | None,
 ) -> list[CriterioEvaluado]:
-    """Si el LLM dice equipo destino incorrecto, marca como THUMBS_DOWN la
-    sub-regla del último actor que derivó. El resto queda como está.
+    """Si el LLM detectó un paso incorrecto en la cadena, marca THUMBS_DOWN
+    la sub-regla del actor del paso erróneo (no necesariamente el último).
     """
     if not veredicto or veredicto.get("correcto") is not False:
-        return sub_reglas  # equipo correcto o LLM falló → no tocamos nada
+        return sub_reglas  # cadena correcta o LLM falló → no tocamos nada
 
     if not historial:
         return sub_reglas
 
-    # Último actor humano/automático que derivó
-    ultimo = historial[-1]
+    # Identificar qué paso del recorrido fue incorrecto (1-based del LLM).
+    paso_idx = veredicto.get("paso_incorrecto")
+    if paso_idx and 1 <= paso_idx <= len(historial):
+        paso_erroneo = historial[paso_idx - 1]
+    else:
+        # Si el LLM no especificó, asumimos el último paso.
+        paso_erroneo = historial[-1]
+
     actor_a_sub_regla = {
         "Triagem": "triagem_actuo",
         "Guru": "guru_derivo",
         "ADA": "ada_actuo",
-        # Trigger no tiene sub-regla propia, va a derivacion_aplicada
+        # Trigger sin sub-regla propia → derivacion_aplicada
     }
-    sub_regla_target = actor_a_sub_regla.get(ultimo["actor"], "derivacion_aplicada")
+    sub_regla_target = actor_a_sub_regla.get(
+        paso_erroneo["actor"], "derivacion_aplicada"
+    )
 
     razon = veredicto.get("razon", "")
     sugerido = veredicto.get("equipo_sugerido")
-    equipo_nombre = veredicto.get("equipo_destino_nombre", "el equipo destino")
+    equipo_nombre = (
+        zd.get_group_name(paso_erroneo["grupo_destino"])
+        if paso_erroneo["grupo_destino"]
+        else paso_erroneo["grupo_destino_label"]
+    )
     nuevo_texto = (
-        f"{ultimo['actor']} derivó a {equipo_nombre}, pero el equipo no es "
-        f"el correcto para el contenido del ticket"
+        f"{paso_erroneo['actor']} derivó a {equipo_nombre}, pero ese equipo "
+        f"no era el correcto para resolver el ticket"
     )
     if sugerido:
-        nuevo_texto += f" (sugerido: {sugerido})"
+        nuevo_texto += f" (debió ir a: {sugerido})"
     if razon:
         nuevo_texto += f". {razon}"
     nuevo_texto += "."
@@ -551,13 +625,14 @@ def evaluar_derivacoes(ticket_id: int) -> list[CriterioEvaluado]:
         _sub_hubo_derivacion(ticket_id, historial),
     ]
 
-    # Evaluar con LLM si el último equipo destino es apropiado (B4.3)
+    # Evaluar con LLM la cadena completa (B4.3)
     if historial:
         grupo_final = historial[-1]["grupo_destino"]
+        # Solo evaluamos si el destino final NO es Triagem (esos casos los
+        # marca el prompt como incorrectos por regla fija, pero no aporta
+        # gastar el LLM call).
         if grupo_final and grupo_final not in TRIAGEM_GROUPS:
-            # Solo evaluamos si el destino final NO es Triagem (no tiene sentido
-            # auditar "¿está bien en Triagem?" — Triagem nunca es destino final).
-            veredicto = _evaluar_equipo_correcto(ticket_id, grupo_final)
+            veredicto = _evaluar_equipo_correcto(ticket_id, historial)
             sub_reglas = _aplicar_veredicto_llm(sub_reglas, historial, veredicto)
 
     return sub_reglas
